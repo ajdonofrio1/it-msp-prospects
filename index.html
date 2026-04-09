@@ -3,77 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IT/MSP Prospects Dashboard — AJ Donofrio</title>
+<title>IT/MSP Prospects</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
-  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 28px 40px; }
-  .header h1 { font-size: 24px; font-weight: 700; }
-  .header p { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 6px; }
-  .stats-bar { display: flex; gap: 14px; flex-wrap: wrap; padding: 24px 40px; }
-  .container { padding: 0 40px 40px; }
-  .filters { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1629; color: #fff; }
+
+  /* NAV */
+  .nav { background: rgba(15,22,41,0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: #fff; }
+  .nav-brand .logo { width: 28px; height: 28px; background: #e74c3c; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 6px 14px; border-radius: 6px; transition: all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* HERO */
+  .hero { background: linear-gradient(160deg, #0f1629 0%, #1a2850 40%, #0d2060 100%);
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 40px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(59,130,246,0.12) 0%, transparent 70%); }
+  .hero-content { position: relative; z-index: 1; max-width: 700px; }
+  .auto-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 16px;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); letter-spacing: 0.05em;
+    margin-bottom: 32px; }
+  .auto-badge .dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%;
+    box-shadow: 0 0 6px #22c55e; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 8px; color: #fff; }
+  .hero h2 { font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 28px;
+    background: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p { color: rgba(255,255,255,0.65); font-size: 16px; line-height: 1.6; margin-bottom: 40px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 48px; }
+  .hero-badge { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px; padding: 8px 16px; font-size: 13px; color: rgba(255,255,255,0.8);
+    display: flex; align-items: center; gap: 6px; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px;
+    background: #fff; color: #0f1629; font-weight: 700; font-size: 15px;
+    padding: 14px 32px; border-radius: 10px; text-decoration: none; transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+
+  /* DASHBOARD SECTION */
+  #dashboard { background: #f4f6f9; color: #222; padding: 40px; }
+  .stats-grid { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+  .stat-card { background: #fff; border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    min-width: 120px; text-align: center; }
+  .stat-card .val { font-size: 28px; font-weight: 700; }
+  .stat-card .lbl { font-size: 12px; color: #666; margin-top: 4px; }
+  .filters { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
   .filters label { font-size: 12px; color: #666; font-weight: 600; }
   .filters select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: #fafafa; }
-  .filters input { padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; width: 200px; }
+  .filters input { padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; width: 220px; }
   .table-wrap { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; }
   thead { background: #f8f9fa; }
-  th { padding: 12px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #888; text-align: left; border-bottom: 2px solid #eee; white-space: nowrap; }
+  th { padding: 12px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #888;
+    text-align: left; border-bottom: 2px solid #eee; white-space: nowrap; }
   .run-info { text-align: right; padding: 12px 20px; font-size: 11px; color: #aaa; border-top: 1px solid #f0f0f0; }
   .count-badge { background: #e8f4fd; color: #2980b9; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+
+  /* TARGET CRITERIA SECTION */
+  #criteria { background: linear-gradient(160deg, #0f1629 0%, #1a2850 100%); color: #fff; padding: 60px 40px; }
+  .criteria-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+  .criteria-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 28px; }
+  .criteria-card h3 { font-size: 14px; font-weight: 700; color: #60a5fa; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 14px; }
+  .criteria-card ul { list-style: none; }
+  .criteria-card ul li { font-size: 14px; color: rgba(255,255,255,0.75); padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; }
+  .criteria-card ul li::before { content: '✓'; color: #22c55e; font-weight: 700; font-size: 12px; flex-shrink: 0; }
 </style>
 </head>
 <body>
-<div class="header">
-  <h1>🖥️ IT/MSP Prospects Dashboard</h1>
-  <p>AJ Donofrio · B2B Prospecting · Updated 2026-04-09</p>
-</div>
 
-<div class="stats-bar">
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #2980b9">
-    <div style="font-size:28px;font-weight:700;color:#2980b9">20</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">Total Prospects</div>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="logo">💻</div>
+    IT/MSP Prospects
   </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #e74c3c">
-    <div style="font-size:28px;font-weight:700;color:#e74c3c">6</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">High Priority</div>
+  <div class="nav-links">
+    <a href="#dashboard" class="active">Dashboard</a>
+    <a href="#criteria">Target Criteria</a>
   </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #e67e22">
-    <div style="font-size:28px;font-weight:700;color:#e67e22">5</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">Strong Priority</div>
-  </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #3498db">
-    <div style="font-size:28px;font-weight:700;color:#3498db">9</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">Pipeline</div>
-  </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #2980b9">
-    <div style="font-size:28px;font-weight:700;color:#2980b9">10</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">NY</div>
-  </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #27ae60">
-    <div style="font-size:28px;font-weight:700;color:#27ae60">7</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">NJ</div>
-  </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #8e44ad">
-    <div style="font-size:28px;font-weight:700;color:#8e44ad">3</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">CT</div>
-  </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #c0392b">
-    <div style="font-size:28px;font-weight:700;color:#c0392b">10</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">With IT Signal</div>
-  </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #16a085">
-    <div style="font-size:28px;font-weight:700;color:#16a085">6</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">With Phone</div>
-  </div>
-  <div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-width:120px;text-align:center;border-top:4px solid #8e44ad">
-    <div style="font-size:28px;font-weight:700;color:#8e44ad">9</div>
-    <div style="font-size:12px;color:#666;margin-top:4px">With Email</div>
-  </div>
-</div>
+</nav>
 
-<div class="container">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="auto-badge">
+      <span class="dot"></span>
+      DAILY 1:00 PM AUTO-UPDATE
+    </div>
+    <h1>IT/MSP SMB</h1>
+    <h2>Decision-Maker Prospects</h2>
+    <p>Owners, Founders &amp; CEOs actively running businesses that need<br>
+    managed IT services — sourced daily across NJ, NY &amp; CT.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">👥 20–200 Employees</span>
+      <span class="hero-badge">💰 $10M–$100M Revenue</span>
+      <span class="hero-badge">📍 NJ · NY · CT</span>
+      <span class="hero-badge">🔺 IT Signal Detection</span>
+      <span class="hero-badge">📞 Phone + Email Lookup</span>
+    </div>
+    <a href="#dashboard" class="cta-btn">View Dashboard ↓</a>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard">
+
+  <div class="stats-grid">
+    <div class="stat-card" style="border-top:4px solid #2980b9"><div class="val" style="color:#2980b9">20</div><div class="lbl">Total Prospects</div></div>
+    <div class="stat-card" style="border-top:4px solid #e74c3c"><div class="val" style="color:#e74c3c">6</div><div class="lbl">High Priority</div></div>
+    <div class="stat-card" style="border-top:4px solid #e67e22"><div class="val" style="color:#e67e22">5</div><div class="lbl">Strong Priority</div></div>
+    <div class="stat-card" style="border-top:4px solid #3498db"><div class="val" style="color:#3498db">9</div><div class="lbl">Pipeline</div></div>
+    <div class="stat-card" style="border-top:4px solid #2980b9"><div class="val" style="color:#2980b9">10</div><div class="lbl">NY</div></div>
+    <div class="stat-card" style="border-top:4px solid #27ae60"><div class="val" style="color:#27ae60">7</div><div class="lbl">NJ</div></div>
+    <div class="stat-card" style="border-top:4px solid #8e44ad"><div class="val" style="color:#8e44ad">3</div><div class="lbl">CT</div></div>
+    <div class="stat-card" style="border-top:4px solid #c0392b"><div class="val" style="color:#c0392b">10</div><div class="lbl">With IT Signal</div></div>
+    <div class="stat-card" style="border-top:4px solid #16a085"><div class="val" style="color:#16a085">6</div><div class="lbl">With Phone</div></div>
+    <div class="stat-card" style="border-top:4px solid #8e44ad"><div class="val" style="color:#8e44ad">9</div><div class="lbl">With Email</div></div>
+  </div>
+
   <div class="filters">
     <label>FILTER:</label>
     <input type="text" id="searchInput" placeholder="Search name, company, industry…" oninput="filterTable()">
@@ -741,9 +801,60 @@
   </tr>
       </tbody>
     </table>
-    <div class="run-info">Generated 4/9/2026, 9:26:08 AM · 20 total prospects across all runs</div>
+    <div class="run-info">Last updated 2026-04-09 · 20 total prospects across all runs</div>
   </div>
-</div>
+
+</section>
+
+<!-- TARGET CRITERIA -->
+<section id="criteria">
+  <div style="text-align:center;margin-bottom:40px">
+    <h2 style="font-size:32px;font-weight:800;margin-bottom:10px">Target Criteria</h2>
+    <p style="color:rgba(255,255,255,0.55);font-size:15px">How prospects are selected and scored each run</p>
+  </div>
+  <div class="criteria-grid">
+    <div class="criteria-card">
+      <h3>Company Profile</h3>
+      <ul>
+        <li>20–200 employees</li>
+        <li>$10M–$100M estimated revenue</li>
+        <li>NJ, NY, or CT based</li>
+        <li>Non-IT / non-MSP business</li>
+        <li>Active, established operation</li>
+      </ul>
+    </div>
+    <div class="criteria-card">
+      <h3>Contact Type</h3>
+      <ul>
+        <li>Owner / Founder</li>
+        <li>CEO / President</li>
+        <li>COO / Managing Director</li>
+        <li>Direct decision-maker</li>
+        <li>LinkedIn-verified profile</li>
+      </ul>
+    </div>
+    <div class="criteria-card">
+      <h3>IT Signals</h3>
+      <ul>
+        <li>MSP / IT vendor search activity</li>
+        <li>Cybersecurity interest / incident</li>
+        <li>Cloud migration in progress</li>
+        <li>IT staff hiring (no internal IT)</li>
+        <li>Tech stack growth signals</li>
+      </ul>
+    </div>
+    <div class="criteria-card">
+      <h3>Priority Scoring</h3>
+      <ul>
+        <li><strong style="color:#e74c3c">High</strong> — Strong IT signal + contact info</li>
+        <li><strong style="color:#e67e22">Strong</strong> — Good fit + reachable</li>
+        <li><strong style="color:#3498db">Pipeline</strong> — Qualified, needs nurture</li>
+        <li>Phone &amp; email boost score</li>
+        <li>Revenue size factors in</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 <script>
 function filterTable() {
@@ -768,6 +879,13 @@ function filterTable() {
   });
   document.getElementById('rowCount').textContent = visible + ' prospect' + (visible !== 1 ? 's' : '');
 }
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
 </script>
 </body>
 </html>
