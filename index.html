@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>IT/MSP SMB Prospects — AJ Donofrio</title>
+  <title>IT/MSP SMB Prospects â AJ Donofrio</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    /* ── RESET & ROOT ───────────────────────────────────── */
+    /* ââ RESET & ROOT âââââââââââââââââââââââââââââââââââââ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --blue:       #1a56db;
@@ -32,7 +32,7 @@
       line-height: 1.5;
     }
 
-    /* ── NAV ────────────────────────────────────────────── */
+    /* ââ NAV ââââââââââââââââââââââââââââââââââââââââââââââ */
     nav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(10,36,99,0.97);
@@ -62,7 +62,7 @@
       margin-left: 4px;
     }
 
-    /* ── HERO ───────────────────────────────────────────── */
+    /* ââ HERO âââââââââââââââââââââââââââââââââââââââââââââ */
     .hero {
       background: linear-gradient(135deg, #1a56db 0%, #0e3a96 45%, #0a2463 100%);
       padding: 64px 32px 48px;
@@ -116,7 +116,7 @@
     .btn-green { background: var(--green); color: white; }
     .btn-green:hover { opacity: 0.9; }
 
-    /* ── STAT BAR ───────────────────────────────────────── */
+    /* ââ STAT BAR âââââââââââââââââââââââââââââââââââââââââ */
     .stat-bar {
       background: white;
       display: flex; flex-wrap: wrap;
@@ -134,13 +134,13 @@
     .stat-num { font-size: 1.9rem; font-weight: 800; }
     .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
 
-    /* ── MAIN LAYOUT ────────────────────────────────────── */
+    /* ââ MAIN LAYOUT ââââââââââââââââââââââââââââââââââââââ */
     .container { max-width: 1600px; margin: 0 auto; padding: 28px 20px; }
 
-    /* ── SECTION TITLE ──────────────────────────────────── */
+    /* ââ SECTION TITLE ââââââââââââââââââââââââââââââââââââ */
     .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px; }
 
-    /* ── CARDS ──────────────────────────────────────────── */
+    /* ââ CARDS ââââââââââââââââââââââââââââââââââââââââââââ */
     .card {
       background: var(--card);
       border-radius: var(--radius);
@@ -149,13 +149,13 @@
     }
     .card-title { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 
-    /* ── CHARTS ROW ─────────────────────────────────────── */
+    /* ââ CHARTS ROW âââââââââââââââââââââââââââââââââââââââ */
     .charts-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
     @media (max-width: 1100px) { .charts-row { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
     .chart-wrap { position: relative; height: 210px; }
 
-    /* ── INFO CARDS ROW ─────────────────────────────────── */
+    /* ââ INFO CARDS ROW âââââââââââââââââââââââââââââââââââ */
     .info-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
     @media (max-width: 1000px) { .info-row { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 580px) { .info-row { grid-template-columns: 1fr; } }
@@ -176,7 +176,7 @@
     .info-num { font-size: 1.7rem; font-weight: 800; line-height: 1; }
     .info-label { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
-    /* ── FILTERS ────────────────────────────────────────── */
+    /* ââ FILTERS ââââââââââââââââââââââââââââââââââââââââââ */
     .filters {
       background: var(--card);
       border-radius: var(--radius);
@@ -203,7 +203,7 @@
     }
     .filter-actions { display: flex; gap: 8px; align-items: flex-end; }
 
-    /* ── TABLE ──────────────────────────────────────────── */
+    /* ââ TABLE ââââââââââââââââââââââââââââââââââââââââââââ */
     .table-card {
       background: var(--card);
       border-radius: var(--radius);
@@ -235,8 +235,8 @@
       user-select: none;
     }
     thead th:hover { background: #eef2ff; color: var(--blue); }
-    thead th.sorted-asc::after { content: ' ↑'; color: var(--blue); }
-    thead th.sorted-desc::after { content: ' ↓'; color: var(--blue); }
+    thead th.sorted-asc::after { content: ' â'; color: var(--blue); }
+    thead th.sorted-desc::after { content: ' â'; color: var(--blue); }
     tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: #f8fafc; }
@@ -246,7 +246,7 @@
     a { color: var(--blue); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* ── BADGES ─────────────────────────────────────────── */
+    /* ââ BADGES âââââââââââââââââââââââââââââââââââââââââââ */
     .badge {
       display: inline-flex; align-items: center; gap: 4px;
       padding: 3px 9px; border-radius: 99px;
@@ -261,7 +261,7 @@
     .badge-hiring   { background: #fef9c3; color: #92400e; }
     .badge-none     { background: #f3f4f6; color: #9ca3af; }
 
-    /* ── STATUS SELECT ──────────────────────────────────── */
+    /* ââ STATUS SELECT ââââââââââââââââââââââââââââââââââââ */
     .status-select {
       padding: 5px 8px;
       border: 1px solid var(--border);
@@ -274,14 +274,14 @@
     }
     .status-select:focus { outline: none; border-color: var(--blue); }
 
-    /* ── EMPTY STATE ────────────────────────────────────── */
+    /* ââ EMPTY STATE ââââââââââââââââââââââââââââââââââââââ */
     .empty-state { text-align: center; padding: 72px 24px; color: var(--muted); }
     .empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
     .empty-state h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
     .empty-state p { font-size: 0.9rem; max-width: 400px; margin: 0 auto 24px; line-height: 1.6; }
 
 
-    /* ── FOOTER ─────────────────────────────────────────── */
+    /* ââ FOOTER âââââââââââââââââââââââââââââââââââââââââââ */
     footer {
       background: var(--blue-xdark);
       color: rgba(255,255,255,0.6);
@@ -292,7 +292,7 @@
     }
     footer strong { color: white; }
 
-    /* ── LAST UPDATED PULSE ─────────────────────────────── */
+    /* ââ LAST UPDATED PULSE âââââââââââââââââââââââââââââââ */
     .pulse {
       display: inline-block;
       width: 8px; height: 8px;
@@ -308,10 +308,10 @@
 </head>
 <body>
 
-<!-- ── NAV ──────────────────────────────────────────────── -->
+<!-- ââ NAV ââââââââââââââââââââââââââââââââââââââââââââââââ -->
 <nav>
   <a class="nav-brand" href="#">
-    <span class="icon">🖥️</span>
+    <span class="icon">ð¥ï¸</span>
     IT/MSP Prospects
   </a>
   <div class="nav-links">
@@ -320,7 +320,7 @@
   </div>
 </nav>
 
-<!-- ── HERO ─────────────────────────────────────────────── -->
+<!-- ââ HERO âââââââââââââââââââââââââââââââââââââââââââââââ -->
 <section class="hero">
   <div class="hero-content">
     <div class="hero-eyebrow">
@@ -328,21 +328,21 @@
       Daily 1:00 PM Auto-Update
     </div>
     <h1>IT/MSP SMB<br><span>Decision-Maker Prospects</span></h1>
-    <p>Owners, Founders &amp; CEOs actively running businesses that need managed IT services — sourced daily across NJ, NY &amp; CT.</p>
+    <p>Owners, Founders &amp; CEOs actively running businesses that need managed IT services â sourced daily across NJ, NY &amp; CT.</p>
     <div class="hero-pills">
-      <span class="hero-pill">🏢 20–200 Employees</span>
-      <span class="hero-pill">💰 $10M–$100M Revenue</span>
-      <span class="hero-pill">📍 NJ · NY · CT</span>
-      <span class="hero-pill">🔍 IT Signal Detection</span>
-      <span class="hero-pill">📞 Phone + Email Lookup</span>
+      <span class="hero-pill">ð¢ 20â200 Employees</span>
+      <span class="hero-pill">ð° $10Mâ$100M Revenue</span>
+      <span class="hero-pill">ð NJ Â· NY Â· CT</span>
+      <span class="hero-pill">ð IT Signal Detection</span>
+      <span class="hero-pill">ð Phone + Email Lookup</span>
     </div>
     <div class="hero-cta">
-      <a href="#dashboard" class="btn btn-white">View Dashboard ↓</a>
+      <a href="#dashboard" class="btn btn-white">View Dashboard â</a>
     </div>
   </div>
 </section>
 
-<!-- ── STAT BAR ──────────────────────────────────────────── -->
+<!-- ââ STAT BAR ââââââââââââââââââââââââââââââââââââââââââââ -->
 <div class="stat-bar" id="statBar">
   <div class="stat-item">
     <div class="stat-num" id="statTotal" style="color:var(--blue)">0</div>
@@ -378,26 +378,26 @@
   </div>
 </div>
 
-<!-- ── MAIN DASHBOARD ────────────────────────────────────── -->
+<!-- ââ MAIN DASHBOARD ââââââââââââââââââââââââââââââââââââââ -->
 <section id="dashboard">
 <div class="container">
 
   <!-- Info cards -->
   <div class="info-row" id="infoRow" style="display:none">
     <div class="info-card blue">
-      <div class="info-icon">🏢</div>
+      <div class="info-icon">ð¢</div>
       <div><div class="info-num" id="iTotal">0</div><div class="info-label">Total Prospects Logged</div></div>
     </div>
     <div class="info-card red">
-      <div class="info-icon">🔥</div>
+      <div class="info-icon">ð¥</div>
       <div><div class="info-num" id="iHigh">0</div><div class="info-label">High Priority Targets</div></div>
     </div>
     <div class="info-card green">
-      <div class="info-icon">🔍</div>
+      <div class="info-icon">ð</div>
       <div><div class="info-num" id="iSignal">0</div><div class="info-label">With IT Buying Signal</div></div>
     </div>
     <div class="info-card amber">
-      <div class="info-icon">📞</div>
+      <div class="info-icon">ð</div>
       <div><div class="info-num" id="iPhone">0</div><div class="info-label">Direct Phone Numbers</div></div>
     </div>
   </div>
@@ -405,15 +405,15 @@
   <!-- Charts -->
   <div class="charts-row" id="chartsRow" style="display:none">
     <div class="card">
-      <div class="card-title">📊 By Industry</div>
+      <div class="card-title">ð By Industry</div>
       <div class="chart-wrap"><canvas id="industryChart"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">⚡ By Priority Level</div>
+      <div class="card-title">â¡ By Priority Level</div>
       <div class="chart-wrap"><canvas id="priorityChart"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">📅 Prospects Added Over Time</div>
+      <div class="card-title">ð Prospects Added Over Time</div>
       <div class="chart-wrap"><canvas id="timelineChart"></canvas></div>
     </div>
   </div>
@@ -421,65 +421,65 @@
   <!-- Filters -->
   <div class="filters">
     <div class="filter-group">
-      <label>🔎 Search</label>
+      <label>ð Search</label>
       <input type="text" id="filterSearch" placeholder="Company, name, email, city..." oninput="applyFilters()">
     </div>
     <div class="filter-group">
-      <label>📍 State</label>
+      <label>ð State</label>
       <select id="filterState" onchange="applyFilters()">
         <option value="">All States</option>
-        <option value="NY">🗽 New York</option>
-        <option value="NJ">🌿 New Jersey</option>
-        <option value="CT">⚓ Connecticut</option>
+        <option value="NY">ð½ New York</option>
+        <option value="NJ">ð¿ New Jersey</option>
+        <option value="CT">â Connecticut</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>⚡ Priority</label>
+      <label>â¡ Priority</label>
       <select id="filterPriority" onchange="applyFilters()">
         <option value="">All Priorities</option>
-        <option value="High">🔴 High</option>
-        <option value="Strong">🟡 Strong</option>
-        <option value="Pipeline">🔵 Pipeline</option>
+        <option value="High">ð´ High</option>
+        <option value="Strong">ð¡ Strong</option>
+        <option value="Pipeline">ðµ Pipeline</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>🖥️ IT Signal</label>
+      <label>ð¥ï¸ IT Signal</label>
       <select id="filterSignal" onchange="applyFilters()">
         <option value="">All</option>
-        <option value="yes">✅ Signal Detected</option>
-        <option value="no">— No Signal</option>
+        <option value="yes">â Signal Detected</option>
+        <option value="no">â No Signal</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>🏭 Industry</label>
+      <label>ð­ Industry</label>
       <select id="filterIndustry" onchange="applyFilters()">
         <option value="">All Industries</option>
       </select>
     </div>
     <div class="filter-group">
-      <label>📋 Status</label>
+      <label>ð Status</label>
       <select id="filterStatus" onchange="applyFilters()">
         <option value="">All Statuses</option>
-        <option value="Not Contacted">⬜ Not Contacted</option>
-        <option value="Left Message">📞 Left Message</option>
-        <option value="Sent Email">📧 Sent Email</option>
-        <option value="Not Interested">❌ Not Interested</option>
-        <option value="Unreachable/Wrong Number">🚫 Unreachable/Wrong Number</option>
-        <option value="Meeting Booked">📅 Meeting Booked</option>
+        <option value="Not Contacted">â¬ Not Contacted</option>
+        <option value="Left Message">ð Left Message</option>
+        <option value="Sent Email">ð§ Sent Email</option>
+        <option value="Not Interested">â Not Interested</option>
+        <option value="Unreachable/Wrong Number">ð« Unreachable/Wrong Number</option>
+        <option value="Meeting Booked">ð Meeting Booked</option>
       </select>
     </div>
     <div class="filter-actions">
-      <button class="btn btn-secondary" onclick="clearFilters()">↺ Reset</button>
-      <button class="btn btn-primary" onclick="exportCSV()">⬇ CSV</button>
+      <button class="btn btn-secondary" onclick="clearFilters()">âº Reset</button>
+      <button class="btn btn-primary" onclick="exportCSV()">â¬ CSV</button>
     </div>
   </div>
 
   <!-- Table -->
   <div class="table-card">
     <div class="table-header">
-      <h2>🏢 IT/MSP Decision-Maker Prospects</h2>
+      <h2>ð¢ IT/MSP Decision-Maker Prospects</h2>
       <div style="display:flex;align-items:center;gap:12px">
-        <span class="result-count" id="resultCount">Loading…</span>
+        <span class="result-count" id="resultCount">Loadingâ¦</span>
       </div>
     </div>
     <div class="table-wrap">
@@ -490,9 +490,9 @@
             <th onclick="sortTable(1)">Industry</th>
             <th onclick="sortTable(2)">Size / Revenue</th>
             <th onclick="sortTable(3)">Decision Maker</th>
-            <th onclick="sortTable(4)">📞 Phone</th>
-            <th onclick="sortTable(5)">✉️ Email</th>
-            <th onclick="sortTable(6)">🖥️ IT Signal</th>
+            <th onclick="sortTable(4)">ð Phone</th>
+            <th onclick="sortTable(5)">âï¸ Email</th>
+            <th onclick="sortTable(6)">ð¥ï¸ IT Signal</th>
             <th onclick="sortTable(7)">Priority</th>
             <th>Status</th>
             <th onclick="sortTable(9)">Run Date</th>
@@ -503,39 +503,39 @@
       </table>
     </div>
     <div id="emptyState" class="empty-state" style="display:none">
-      <div class="empty-icon">🖥️</div>
-      <h3>No prospects yet — first run coming up!</h3>
-      <p>The scheduled task runs every day at 1:00 PM EST. It will search LinkedIn for Owners, Founders &amp; CEOs of 20–200 employee businesses in NJ, NY &amp; CT and populate this dashboard automatically.</p>
+      <div class="empty-icon">ð¥ï¸</div>
+      <h3>No prospects yet â first run coming up!</h3>
+      <p>The scheduled task runs every day at 1:00 PM EST. It will search LinkedIn for Owners, Founders &amp; CEOs of 20â200 employee businesses in NJ, NY &amp; CT and populate this dashboard automatically.</p>
     </div>
   </div>
 
 </div>
 </section>
 
-<!-- ── TARGET CRITERIA ───────────────────────────────────── -->
+<!-- ââ TARGET CRITERIA âââââââââââââââââââââââââââââââââââââ -->
 <section id="criteria" style="background:white; padding: 48px 0; margin-top: 40px; border-top: 1px solid var(--border);">
   <div class="container" style="max-width:1000px">
-    <div class="section-title" style="text-align:center;margin-bottom:32px">🎯 Who We're Targeting</div>
+    <div class="section-title" style="text-align:center;margin-bottom:32px">ð¯ Who We're Targeting</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
       <div class="card" style="border-top:3px solid var(--blue)">
-        <div style="font-size:1.6rem;margin-bottom:12px">👤</div>
+        <div style="font-size:1.6rem;margin-bottom:12px">ð¤</div>
         <div style="font-weight:700;margin-bottom:8px">Decision Maker Titles</div>
         <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
-          Owner · Founder · Co-Founder<br>CEO · President<br>Managing Director<br>Managing Partner
+          Owner Â· Founder Â· Co-Founder<br>CEO Â· President<br>Managing Director<br>Managing Partner
         </div>
       </div>
       <div class="card" style="border-top:3px solid var(--green)">
-        <div style="font-size:1.6rem;margin-bottom:12px">🏢</div>
+        <div style="font-size:1.6rem;margin-bottom:12px">ð¢</div>
         <div style="font-weight:700;margin-bottom:8px">Company Profile</div>
         <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
-          20–200 Employees<br>$10M–$100M Revenue<br>Any Industry<br>NJ · NY · CT Only
+          20â200 Employees<br>$10Mâ$100M Revenue<br>Any Industry<br>NJ Â· NY Â· CT Only
         </div>
       </div>
       <div class="card" style="border-top:3px solid var(--purple)">
-        <div style="font-size:1.6rem;margin-bottom:12px">🔍</div>
+        <div style="font-size:1.6rem;margin-bottom:12px">ð</div>
         <div style="font-weight:700;margin-bottom:8px">IT Buying Signals</div>
         <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
-          MSP searches<br>Cybersecurity interest<br>Cloud migration activity<br>IT job postings (3–6 mo)
+          MSP searches<br>Cybersecurity interest<br>Cloud migration activity<br>IT job postings (3â6 mo)
         </div>
       </div>
     </div>
@@ -543,26 +543,47 @@
 </section>
 
 
-<!-- ── FOOTER ────────────────────────────────────────────── -->
+<!-- ââ FOOTER ââââââââââââââââââââââââââââââââââââââââââââââ -->
 <footer>
-  <strong>IT/MSP SMB Prospects Dashboard</strong> · AJ Donofrio · Powered by daily LinkedIn prospecting<br>
-  <span style="margin-top:4px;display:block">Targeting Owners, Founders &amp; CEOs · NJ · NY · CT · 20–200 Employees · $10M–$100M Revenue</span>
+  <strong>IT/MSP SMB Prospects Dashboard</strong> Â· AJ Donofrio Â· Powered by daily LinkedIn prospecting<br>
+  <span style="margin-top:4px;display:block">Targeting Owners, Founders &amp; CEOs Â· NJ Â· NY Â· CT Â· 20â200 Employees Â· $10Mâ$100M Revenue</span>
 </footer>
 
 <script>
-// ── PROSPECT DATA ──────────────────────────────────────────
+// ââ PROSPECT DATA ââââââââââââââââââââââââââââââââââââââââââ
 // This array is populated by the daily 1pm scheduled task.
 // Each run appends 20 new prospects and regenerates this file.
-const PROSPECTS = [];
+const PROSPECTS = [
+  { id:"p-0", companyName:"Hired by Matrix, Inc.", location:"Montvale, NJ", state:"NJ", industry:"Staffing & Recruiting", employeeSize:"100-200", estimatedRevenue:"$25M-$35M", contactName:"Sharon Olzerowicz", contactTitle:"President & CEO", contactLinkedIn:"https://www.linkedin.com/in/sharon-olzerowicz-a01790b/", contactPhone:"201-587-0777", contactEmail:"solzerowicz@hiredbymatrix.com", itSignal:"IT Hiring", priority:"High", runDate:"2026-04-09" },
+  { id:"p-1", companyName:"Lionheart Maintenance LLC", location:"Hopewell, NJ", state:"NJ", industry:"Facilities Maintenance / Data Center Services", employeeSize:"20-50", estimatedRevenue:"$5M-$25M", contactName:"Paul Spagnoletti", contactTitle:"President & CEO", contactLinkedIn:"https://www.linkedin.com/company/lionheart-maintenance-llc", contactPhone:"973-218-6443", contactEmail:"paul@LHMUS.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09" },
+  { id:"p-2", companyName:"RDS Same Day Delivery", location:"Long Island City, NY", state:"NY", industry:"Healthcare Logistics / Last-Mile Delivery", employeeSize:"50-150", estimatedRevenue:"$15M-$25M", contactName:"Larry Zogby", contactTitle:"CEO", contactLinkedIn:"https://www.linkedin.com/in/larryzogby/", contactPhone:null, contactEmail:"lzogby@rdsdelivery.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09" },
+  { id:"p-3", companyName:"Komar Distribution Services", location:"New York, NY", state:"NY", industry:"3PL / Distribution", employeeSize:"100-200", estimatedRevenue:"$25M-$40M", contactName:"Jay Harris", contactTitle:"CEO", contactLinkedIn:"https://www.linkedin.com/in/jay-harris-7a4b6b1/", contactPhone:"918-429-7779", contactEmail:"sales@komardistribution.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09" },
+  { id:"p-4", companyName:"MTS Logistics, Inc.", location:"New York, NY", state:"NY", industry:"International Freight / Ocean Cargo", employeeSize:"50-100", estimatedRevenue:"$10M-$20M", contactName:"Sedat Saka", contactTitle:"CEO", contactLinkedIn:"https://www.linkedin.com/in/sedat-saka-33479714/", contactPhone:"212-594-3117", contactEmail:"ssaka@mtsnyc.com", itSignal:"Cloud Migration", priority:"High", runDate:"2026-04-09" },
+  { id:"p-5", companyName:"Avenir Healthcare Group", location:"Cedarhurst, NY", state:"NY", industry:"Healthcare Management / Senior Care", employeeSize:"100-300", estimatedRevenue:"$20M-$80M", contactName:"Eric Mendel", contactTitle:"CEO", contactLinkedIn:"https://www.linkedin.com/in/eric-mendel-50049260/", contactPhone:null, contactEmail:"emendel@avenirhc.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09" },
+  { id:"p-6", companyName:"Spectrum Staffing Services / HRStaffers Inc.", location:"Parsippany, NJ", state:"NJ", industry:"Staffing & Recruiting", employeeSize:"50-100", estimatedRevenue:"$15M-$25M", contactName:"Eileen Vos", contactTitle:"CEO", contactLinkedIn:"https://www.linkedin.com/in/eileen-vos-b8b9aa1/", contactPhone:"877-509-9838", contactEmail:"evos@spectrumstaffingusa.com", itSignal:"None", priority:"Strong", runDate:"2026-04-09" },
+  { id:"p-7", companyName:"O'Neill Logistics", location:"East Brunswick, NJ", state:"NJ", industry:"3PL / Transportation & Logistics", employeeSize:"50-100", estimatedRevenue:"$20M-$30M", contactName:"Bob O'Neill", contactTitle:"CEO", contactLinkedIn:"https://www.linkedin.com/in/bob-o-neill-0789b216/", contactPhone:null, contactEmail:null, itSignal:"Cloud Migration", priority:"Strong", runDate:"2026-04-09" },
+  { id:"p-8", companyName:"Summit Direct", location:"Rochester, NY", state:"NY", industry:"Freight / Transportation & Logistics", employeeSize:"30-80", estimatedRevenue:"$10M-$40M", contactName:"Kellie Adami", contactTitle:"CEO", contactLinkedIn:"https://www.linkedin.com/in/kellie-adami-3b4a5618/", contactPhone:null, contactEmail:null, itSignal:"Cloud Migration", priority:"Strong", runDate:"2026-04-09" },
+  { id:"p-9", companyName:"NYC Factory Inc.", location:"New York, NY", state:"NY", industry:"Apparel Manufacturing", employeeSize:"50-100", estimatedRevenue:"$10M-$30M", contactName:"Wuilson Quezada", contactTitle:"Founder & Owner", contactLinkedIn:"https://www.linkedin.com/in/wuilson-quezada-b1580913/", contactPhone:null, contactEmail:null, itSignal:"IT Hiring", priority:"Strong", runDate:"2026-04-09" },
+  { id:"p-10", companyName:"Fortunato Construction Group", location:"Berlin, CT", state:"CT", industry:"Construction Management", employeeSize:"25-50", estimatedRevenue:"$10M-$20M", contactName:"Lindsey Fortunato", contactTitle:"President & CEO", contactLinkedIn:"https://www.linkedin.com/in/lindsey-fortunato-aia-ncarb-b1b8b41a/", contactPhone:null, contactEmail:"lindsey@fortunatoconstruction.com", itSignal:"None", priority:"Strong", runDate:"2026-04-09" },
+  { id:"p-11", companyName:"Equinox Home Improvement", location:"Nutley, NJ", state:"NJ", industry:"Residential & Commercial Renovation", employeeSize:"20-50", estimatedRevenue:"$5M-$20M", contactName:"Adam Beqqi", contactTitle:"CEO & Founder", contactLinkedIn:"https://www.linkedin.com/in/adam-beqqi-b60a60170/", contactPhone:"844-846-8566", contactEmail:"adam@equinoxhomeimprovement.com", itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-12", companyName:"Castellano Construction Inc.", location:"Hillsborough, NJ", state:"NJ", industry:"Construction", employeeSize:"20-75", estimatedRevenue:"$10M-$30M", contactName:"Vincent Castellano", contactTitle:"President", contactLinkedIn:"https://www.linkedin.com/in/vincent-castellano-b59a8b77/", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-13", companyName:"Frank Semeraro Construction Co., Inc.", location:"Wayne, NJ", state:"NJ", industry:"Construction", employeeSize:"40-100", estimatedRevenue:"$15M-$50M", contactName:"Donald Semeraro", contactTitle:"President", contactLinkedIn:"https://www.linkedin.com/in/donald-semeraro-6a3a68174/", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-14", companyName:"JED Engineering, P.C.", location:"Uniondale, NY", state:"NY", industry:"Civil / Structural Engineering", employeeSize:"25-60", estimatedRevenue:"$5M-$20M", contactName:"J. Evans Doleyres", contactTitle:"President & CEO", contactLinkedIn:"https://www.linkedin.com/in/j-evans-doleyres-a7b9b61b/", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-15", companyName:"HydroTech Environmental Engineering and Geology, DPC", location:"New York, NY", state:"NY", industry:"Environmental Engineering", employeeSize:"20-50", estimatedRevenue:"$5M-$20M", contactName:"Tarek Z. Khouri", contactTitle:"President & CEO", contactLinkedIn:"https://www.linkedin.com/in/tarek-z-khouri-p-e-8b4a2614/", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-16", companyName:"MG Engineering, P.C.", location:"New York, NY", state:"NY", industry:"MEP Engineering", employeeSize:"20-60", estimatedRevenue:"$5M-$20M", contactName:"Michael Gerazounis", contactTitle:"President & CEO", contactLinkedIn:"https://www.linkedin.com/in/michael-gerazounis-b2a4851a/", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-17", companyName:"K&A Engineering Consulting PC", location:"White Plains, NY", state:"NY", industry:"Civil / Transportation Engineering", employeeSize:"20-50", estimatedRevenue:"$5M-$20M", contactName:"Purna Kharel", contactTitle:"Founder, President & CEO", contactLinkedIn:"https://www.linkedin.com/in/purna-kharel-6b2b9a1a/", contactPhone:null, contactEmail:null, itSignal:"Cloud Migration", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-18", companyName:"Mastroluca Engineering Associates, LLC", location:"Stamford, CT", state:"CT", industry:"Mechanical / Plumbing Engineering", employeeSize:"20-40", estimatedRevenue:"$5M-$15M", contactName:"Joseph Mastroluca", contactTitle:"Owner", contactLinkedIn:"https://www.linkedin.com/in/joseph-mastroluca-pe-cpd-7b1a5213/", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" },
+  { id:"p-19", companyName:"All Care...All Day", location:"Stratford, CT", state:"CT", industry:"Commercial Cleaning / Facility Services", employeeSize:"25-75", estimatedRevenue:"$5M-$15M", contactName:"Marily Brito", contactTitle:"Founder & CEO", contactLinkedIn:"https://www.linkedin.com/in/marily-brito-3b4a5618/", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09" }
+];
 
-// ── HELPERS ───────────────────────────────────────────────
+// ââ HELPERS âââââââââââââââââââââââââââââââââââââââââââââââ
 function esc(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function signalBadge(signal) {
-  if (!signal || signal === 'None') return '<span class="badge badge-none">—</span>';
+  if (!signal || signal === 'None') return '<span class="badge badge-none">â</span>';
   const map = {
     'Cybersecurity Interest': 'badge-cyber',
     'Cloud Migration': 'badge-cloud',
@@ -570,7 +591,7 @@ function signalBadge(signal) {
     'MSP Search': 'badge-signal',
   };
   const cls = map[signal] || 'badge-signal';
-  return `<span class="badge ${cls}">🔍 ${esc(signal)}</span>`;
+  return `<span class="badge ${cls}">ð ${esc(signal)}</span>`;
 }
 
 function priorityBadge(p) {
@@ -578,7 +599,7 @@ function priorityBadge(p) {
   return `<span class="badge ${map[p] || 'badge-pipeline'}">${esc(p)}</span>`;
 }
 
-// ── RENDER ────────────────────────────────────────────────
+// ââ RENDER ââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderTable(data) {
   const tbody = document.getElementById('tableBody');
   const empty = document.getElementById('emptyState');
@@ -599,8 +620,8 @@ function renderTable(data) {
     const statuses = ['Not Contacted','Left Message','Sent Email','Not Interested','Unreachable/Wrong Number','Meeting Booked'];
     const statusOpts = statuses.map(s =>
       `<option value="${s}" ${savedStatus === s ? 'selected' : ''}>${{
-        'Not Contacted':'⬜','Left Message':'📞','Sent Email':'📧',
-        'Not Interested':'❌','Unreachable/Wrong Number':'🚫','Meeting Booked':'📅'
+        'Not Contacted':'â¬','Left Message':'ð','Sent Email':'ð§',
+        'Not Interested':'â','Unreachable/Wrong Number':'ð«','Meeting Booked':'ð'
       }[s] || ''} ${s}</option>`
     ).join('');
     return `
@@ -627,10 +648,10 @@ function renderTable(data) {
       </td>
       <td>${p.contactPhone
         ? `<a href="tel:${esc(p.contactPhone)}">${esc(p.contactPhone)}</a>`
-        : '<span class="text-muted">—</span>'}</td>
+        : '<span class="text-muted">â</span>'}</td>
       <td>${p.contactEmail
         ? `<a href="mailto:${esc(p.contactEmail)}">${esc(p.contactEmail)}</a>`
-        : '<span class="text-muted">—</span>'}</td>
+        : '<span class="text-muted">â</span>'}</td>
       <td>${signalBadge(p.itSignal)}</td>
       <td>${priorityBadge(p.priority)}</td>
       <td>
@@ -740,14 +761,14 @@ function updateStats(data) {
   });
 }
 
-// ── STATUS ────────────────────────────────────────────────
+// ââ STATUS ââââââââââââââââââââââââââââââââââââââââââââââââ
 function saveStatus(id, val, row) {
   localStorage.setItem('itmsp_status_' + id, val);
   if (row) row.dataset.status = val;
   applyFilters();
 }
 
-// ── FILTERS ───────────────────────────────────────────────
+// ââ FILTERS âââââââââââââââââââââââââââââââââââââââââââââââ
 function applyFilters() {
   const search   = (document.getElementById('filterSearch')?.value || '').toLowerCase();
   const state    = document.getElementById('filterState')?.value || '';
@@ -781,7 +802,7 @@ function clearFilters() {
   applyFilters();
 }
 
-// ── SORT ──────────────────────────────────────────────────
+// ââ SORT ââââââââââââââââââââââââââââââââââââââââââââââââââ
 let sortCol = -1, sortDir = 1;
 function sortTable(col) {
   const tbody = document.getElementById('tableBody');
@@ -800,7 +821,7 @@ function sortTable(col) {
   });
 }
 
-// ── CSV EXPORT ────────────────────────────────────────────
+// ââ CSV EXPORT ââââââââââââââââââââââââââââââââââââââââââââ
 function exportCSV() {
   const hdrs = ['Company','Location','State','Industry','Employee Size','Est. Revenue','Contact Name','Contact Title','LinkedIn','Phone','Email','IT Signal','IT Signal Source','Priority','Run Date'];
   const rows = Array.from(document.querySelectorAll('#tableBody tr:not(.hidden-row)')).map(row => {
@@ -831,7 +852,7 @@ function exportCSV() {
   a.click();
 }
 
-// ── INIT ──────────────────────────────────────────────────
+// ââ INIT ââââââââââââââââââââââââââââââââââââââââââââââââââ
 document.addEventListener('DOMContentLoaded', () => {
   renderTable(PROSPECTS);
   updateStats(PROSPECTS);
