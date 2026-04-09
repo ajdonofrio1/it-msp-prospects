@@ -1,890 +1,841 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IT/MSP Prospects</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1629; color: #fff; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IT/MSP SMB Prospects — AJ Donofrio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    /* ── RESET & ROOT ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:       #1a56db;
+      --blue-dark:  #1e429f;
+      --blue-xdark: #0a2463;
+      --green:      #059669;
+      --red:        #dc2626;
+      --amber:      #d97706;
+      --purple:     #7c3aed;
+      --teal:       #0891b2;
+      --bg:         #f0f4ff;
+      --card:       #ffffff;
+      --border:     #e5e7eb;
+      --text:       #1f2937;
+      --muted:      #6b7280;
+      --radius:     12px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
 
-  /* NAV */
-  .nav { background: rgba(15,22,41,0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 56px;
-    border-bottom: 1px solid rgba(255,255,255,0.08); }
-  .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: #fff; }
-  .nav-brand .logo { width: 28px; height: 28px; background: #e74c3c; border-radius: 6px;
-    display: flex; align-items: center; justify-content: center; font-size: 14px; }
-  .nav-links { display: flex; gap: 8px; }
-  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 500;
-    padding: 6px 14px; border-radius: 6px; transition: all 0.2s; }
-  .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.1); color: #fff; }
+    /* ── NAV ────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,36,99,0.97);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      height: 60px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; color: white; font-weight: 700; font-size: 1.05rem; text-decoration: none; }
+    .nav-brand .icon { font-size: 1.3rem; }
+    .nav-links { display: flex; gap: 8px; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.12); color: white; }
+    .nav-links a.active { background: rgba(255,255,255,0.18); color: white; }
+    .nav-badge {
+      background: #ef4444; color: white;
+      font-size: 0.65rem; font-weight: 700;
+      padding: 2px 6px; border-radius: 99px;
+      margin-left: 4px;
+    }
 
-  /* HERO */
-  .hero { background: linear-gradient(160deg, #0f1629 0%, #1a2850 40%, #0d2060 100%);
-    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 80px 40px; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(59,130,246,0.12) 0%, transparent 70%); }
-  .hero-content { position: relative; z-index: 1; max-width: 700px; }
-  .auto-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 16px;
-    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); letter-spacing: 0.05em;
-    margin-bottom: 32px; }
-  .auto-badge .dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%;
-    box-shadow: 0 0 6px #22c55e; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 8px; color: #fff; }
-  .hero h2 { font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 28px;
-    background: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero p { color: rgba(255,255,255,0.65); font-size: 16px; line-height: 1.6; margin-bottom: 40px; }
-  .hero-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 48px; }
-  .hero-badge { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 20px; padding: 8px 16px; font-size: 13px; color: rgba(255,255,255,0.8);
-    display: flex; align-items: center; gap: 6px; }
-  .cta-btn { display: inline-flex; align-items: center; gap: 8px;
-    background: #fff; color: #0f1629; font-weight: 700; font-size: 15px;
-    padding: 14px 32px; border-radius: 10px; text-decoration: none; transition: all 0.2s;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+    /* ── HERO ───────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1a56db 0%, #0e3a96 45%, #0a2463 100%);
+      padding: 64px 32px 48px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-content { position: relative; max-width: 800px; margin: 0 auto; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 99px;
+      margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .hero h1 span { color: #93c5fd; }
+    .hero p { font-size: 1.1rem; opacity: 0.85; max-width: 560px; margin: 0 auto 32px; }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 32px; }
+    .hero-pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white; font-size: 0.82rem; font-weight: 500;
+      padding: 6px 14px; border-radius: 99px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 600;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .btn-white { background: white; color: var(--blue-dark); }
+    .btn-white:hover { background: #f0f4ff; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4); }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
+    .btn-primary { background: var(--blue); color: white; }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-secondary { background: #f3f4f6; color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-green { background: var(--green); color: white; }
+    .btn-green:hover { opacity: 0.9; }
 
-  /* DASHBOARD SECTION */
-  #dashboard { background: #f4f6f9; color: #222; padding: 40px; }
-  .stats-grid { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
-  .stat-card { background: #fff; border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    min-width: 120px; text-align: center; }
-  .stat-card .val { font-size: 28px; font-weight: 700; }
-  .stat-card .lbl { font-size: 12px; color: #666; margin-top: 4px; }
-  .filters { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  .filters label { font-size: 12px; color: #666; font-weight: 600; }
-  .filters select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: #fafafa; }
-  .filters input { padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; width: 220px; }
-  .table-wrap { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  thead { background: #f8f9fa; }
-  th { padding: 12px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #888;
-    text-align: left; border-bottom: 2px solid #eee; white-space: nowrap; }
-  .run-info { text-align: right; padding: 12px 20px; font-size: 11px; color: #aaa; border-top: 1px solid #f0f0f0; }
-  .count-badge { background: #e8f4fd; color: #2980b9; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+    /* ── STAT BAR ───────────────────────────────────────── */
+    .stat-bar {
+      background: white;
+      display: flex; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .stat-item {
+      flex: 1; min-width: 110px;
+      padding: 18px 20px; text-align: center;
+      border-right: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: #f8fafc; }
+    .stat-num { font-size: 1.9rem; font-weight: 800; }
+    .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
 
-  /* TARGET CRITERIA SECTION */
-  #criteria { background: linear-gradient(160deg, #0f1629 0%, #1a2850 100%); color: #fff; padding: 60px 40px; }
-  .criteria-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
-  .criteria-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px; padding: 28px; }
-  .criteria-card h3 { font-size: 14px; font-weight: 700; color: #60a5fa; text-transform: uppercase;
-    letter-spacing: 0.08em; margin-bottom: 14px; }
-  .criteria-card ul { list-style: none; }
-  .criteria-card ul li { font-size: 14px; color: rgba(255,255,255,0.75); padding: 5px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; }
-  .criteria-card ul li::before { content: '✓'; color: #22c55e; font-weight: 700; font-size: 12px; flex-shrink: 0; }
-</style>
+    /* ── MAIN LAYOUT ────────────────────────────────────── */
+    .container { max-width: 1600px; margin: 0 auto; padding: 28px 20px; }
+
+    /* ── SECTION TITLE ──────────────────────────────────── */
+    .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px; }
+
+    /* ── CARDS ──────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      padding: 22px;
+    }
+    .card-title { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ── CHARTS ROW ─────────────────────────────────────── */
+    .charts-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 1100px) { .charts-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
+    .chart-wrap { position: relative; height: 210px; }
+
+    /* ── INFO CARDS ROW ─────────────────────────────────── */
+    .info-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 1000px) { .info-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 580px) { .info-row { grid-template-columns: 1fr; } }
+    .info-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      padding: 18px 20px;
+      display: flex; align-items: center; gap: 16px;
+      border-left: 4px solid transparent;
+    }
+    .info-card.blue { border-left-color: var(--blue); }
+    .info-card.red { border-left-color: var(--red); }
+    .info-card.green { border-left-color: var(--green); }
+    .info-card.amber { border-left-color: var(--amber); }
+    .info-card.purple { border-left-color: var(--purple); }
+    .info-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .info-num { font-size: 1.7rem; font-weight: 800; line-height: 1; }
+    .info-label { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── FILTERS ────────────────────────────────────────── */
+    .filters {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 4px; }
+    .filter-group label { font-size: 0.7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .filter-group input, .filter-group select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.875rem;
+      background: white;
+      min-width: 150px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .filter-group input:focus, .filter-group select:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(26,86,219,0.12);
+    }
+    .filter-actions { display: flex; gap: 8px; align-items: flex-end; }
+
+    /* ── TABLE ──────────────────────────────────────────── */
+    .table-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+    .table-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap; gap: 10px;
+    }
+    .table-header h2 { font-size: 1rem; font-weight: 700; }
+    .result-count { font-size: 0.82rem; color: var(--muted); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead th {
+      background: #f8fafc;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    thead th:hover { background: #eef2ff; color: var(--blue); }
+    thead th.sorted-asc::after { content: ' ↑'; color: var(--blue); }
+    thead th.sorted-desc::after { content: ' ↓'; color: var(--blue); }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fafc; }
+    tbody tr.hidden-row { display: none; }
+    td { padding: 11px 14px; vertical-align: middle; }
+    .text-muted { color: var(--muted); font-size: 0.8rem; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── BADGES ─────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 9px; border-radius: 99px;
+      font-size: 0.71rem; font-weight: 700;
+    }
+    .badge-high     { background: #fee2e2; color: #dc2626; }
+    .badge-strong   { background: #fef3c7; color: #b45309; }
+    .badge-pipeline { background: #dbeafe; color: #1d4ed8; }
+    .badge-signal   { background: #d1fae5; color: #065f46; }
+    .badge-cyber    { background: #ede9fe; color: #5b21b6; }
+    .badge-cloud    { background: #e0f2fe; color: #0369a1; }
+    .badge-hiring   { background: #fef9c3; color: #92400e; }
+    .badge-none     { background: #f3f4f6; color: #9ca3af; }
+
+    /* ── STATUS SELECT ──────────────────────────────────── */
+    .status-select {
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.78rem;
+      background: white;
+      cursor: pointer;
+      width: 100%;
+      min-width: 145px;
+    }
+    .status-select:focus { outline: none; border-color: var(--blue); }
+
+    /* ── EMPTY STATE ────────────────────────────────────── */
+    .empty-state { text-align: center; padding: 72px 24px; color: var(--muted); }
+    .empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .empty-state h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .empty-state p { font-size: 0.9rem; max-width: 400px; margin: 0 auto 24px; line-height: 1.6; }
+
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--blue-xdark);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 0.8rem;
+      margin-top: 40px;
+    }
+    footer strong { color: white; }
+
+    /* ── LAST UPDATED PULSE ─────────────────────────────── */
+    .pulse {
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: #4ade80; border-radius: 99px;
+      margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-brand">
-    <div class="logo">💻</div>
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav>
+  <a class="nav-brand" href="#">
+    <span class="icon">🖥️</span>
     IT/MSP Prospects
-  </div>
+  </a>
   <div class="nav-links">
     <a href="#dashboard" class="active">Dashboard</a>
     <a href="#criteria">Target Criteria</a>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ── HERO ─────────────────────────────────────────────── -->
 <section class="hero">
   <div class="hero-content">
-    <div class="auto-badge">
-      <span class="dot"></span>
-      DAILY 1:00 PM AUTO-UPDATE
+    <div class="hero-eyebrow">
+      <span class="pulse"></span>
+      Daily 1:00 PM Auto-Update
     </div>
-    <h1>IT/MSP SMB</h1>
-    <h2>Decision-Maker Prospects</h2>
-    <p>Owners, Founders &amp; CEOs actively running businesses that need<br>
-    managed IT services — sourced daily across NJ, NY &amp; CT.</p>
-    <div class="hero-badges">
-      <span class="hero-badge">👥 20–200 Employees</span>
-      <span class="hero-badge">💰 $10M–$100M Revenue</span>
-      <span class="hero-badge">📍 NJ · NY · CT</span>
-      <span class="hero-badge">🔺 IT Signal Detection</span>
-      <span class="hero-badge">📞 Phone + Email Lookup</span>
+    <h1>IT/MSP SMB<br><span>Decision-Maker Prospects</span></h1>
+    <p>Owners, Founders &amp; CEOs actively running businesses that need managed IT services — sourced daily across NJ, NY &amp; CT.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">🏢 20–200 Employees</span>
+      <span class="hero-pill">💰 $10M–$100M Revenue</span>
+      <span class="hero-pill">📍 NJ · NY · CT</span>
+      <span class="hero-pill">🔍 IT Signal Detection</span>
+      <span class="hero-pill">📞 Phone + Email Lookup</span>
     </div>
-    <a href="#dashboard" class="cta-btn">View Dashboard ↓</a>
+    <div class="hero-cta">
+      <a href="#dashboard" class="btn btn-white">View Dashboard ↓</a>
+    </div>
   </div>
 </section>
 
-<!-- DASHBOARD -->
+<!-- ── STAT BAR ──────────────────────────────────────────── -->
+<div class="stat-bar" id="statBar">
+  <div class="stat-item">
+    <div class="stat-num" id="statTotal" style="color:var(--blue)">0</div>
+    <div class="stat-label">Total Prospects</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statHigh" style="color:var(--red)">0</div>
+    <div class="stat-label">High Priority</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statSignal" style="color:var(--green)">0</div>
+    <div class="stat-label">IT Signal Detected</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statPhone" style="color:var(--amber)">0</div>
+    <div class="stat-label">Phones Found</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statEmail" style="color:var(--purple)">0</div>
+    <div class="stat-label">Emails Found</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statNY" style="color:var(--teal)">0</div>
+    <div class="stat-label">New York</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statNJ" style="color:var(--teal)">0</div>
+    <div class="stat-label">New Jersey</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statCT" style="color:var(--teal)">0</div>
+    <div class="stat-label">Connecticut</div>
+  </div>
+</div>
+
+<!-- ── MAIN DASHBOARD ────────────────────────────────────── -->
 <section id="dashboard">
+<div class="container">
 
-  <div class="stats-grid">
-    <div class="stat-card" style="border-top:4px solid #2980b9"><div class="val" style="color:#2980b9">20</div><div class="lbl">Total Prospects</div></div>
-    <div class="stat-card" style="border-top:4px solid #e74c3c"><div class="val" style="color:#e74c3c">6</div><div class="lbl">High Priority</div></div>
-    <div class="stat-card" style="border-top:4px solid #e67e22"><div class="val" style="color:#e67e22">5</div><div class="lbl">Strong Priority</div></div>
-    <div class="stat-card" style="border-top:4px solid #3498db"><div class="val" style="color:#3498db">9</div><div class="lbl">Pipeline</div></div>
-    <div class="stat-card" style="border-top:4px solid #2980b9"><div class="val" style="color:#2980b9">10</div><div class="lbl">NY</div></div>
-    <div class="stat-card" style="border-top:4px solid #27ae60"><div class="val" style="color:#27ae60">7</div><div class="lbl">NJ</div></div>
-    <div class="stat-card" style="border-top:4px solid #8e44ad"><div class="val" style="color:#8e44ad">3</div><div class="lbl">CT</div></div>
-    <div class="stat-card" style="border-top:4px solid #c0392b"><div class="val" style="color:#c0392b">10</div><div class="lbl">With IT Signal</div></div>
-    <div class="stat-card" style="border-top:4px solid #16a085"><div class="val" style="color:#16a085">6</div><div class="lbl">With Phone</div></div>
-    <div class="stat-card" style="border-top:4px solid #8e44ad"><div class="val" style="color:#8e44ad">9</div><div class="lbl">With Email</div></div>
+  <!-- Info cards -->
+  <div class="info-row" id="infoRow" style="display:none">
+    <div class="info-card blue">
+      <div class="info-icon">🏢</div>
+      <div><div class="info-num" id="iTotal">0</div><div class="info-label">Total Prospects Logged</div></div>
+    </div>
+    <div class="info-card red">
+      <div class="info-icon">🔥</div>
+      <div><div class="info-num" id="iHigh">0</div><div class="info-label">High Priority Targets</div></div>
+    </div>
+    <div class="info-card green">
+      <div class="info-icon">🔍</div>
+      <div><div class="info-num" id="iSignal">0</div><div class="info-label">With IT Buying Signal</div></div>
+    </div>
+    <div class="info-card amber">
+      <div class="info-icon">📞</div>
+      <div><div class="info-num" id="iPhone">0</div><div class="info-label">Direct Phone Numbers</div></div>
+    </div>
   </div>
 
+  <!-- Charts -->
+  <div class="charts-row" id="chartsRow" style="display:none">
+    <div class="card">
+      <div class="card-title">📊 By Industry</div>
+      <div class="chart-wrap"><canvas id="industryChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚡ By Priority Level</div>
+      <div class="chart-wrap"><canvas id="priorityChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 Prospects Added Over Time</div>
+      <div class="chart-wrap"><canvas id="timelineChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Filters -->
   <div class="filters">
-    <label>FILTER:</label>
-    <input type="text" id="searchInput" placeholder="Search name, company, industry…" oninput="filterTable()">
-    <label>STATE:</label>
-    <select id="stateFilter" onchange="filterTable()">
-      <option value="">All States</option>
-      <option value="NY">NY</option>
-      <option value="NJ">NJ</option>
-      <option value="CT">CT</option>
-    </select>
-    <label>PRIORITY:</label>
-    <select id="priorityFilter" onchange="filterTable()">
-      <option value="">All Priorities</option>
-      <option value="High">High</option>
-      <option value="Strong">Strong</option>
-      <option value="Pipeline">Pipeline</option>
-    </select>
-    <label>IT SIGNAL:</label>
-    <select id="signalFilter" onchange="filterTable()">
-      <option value="">All Signals</option>
-      <option value="MSP Search">MSP Search</option>
-      <option value="Cybersecurity Interest">Cybersecurity Interest</option>
-      <option value="Cloud Migration">Cloud Migration</option>
-      <option value="IT Hiring">IT Hiring</option>
-      <option value="None">None</option>
-    </select>
-    <span id="rowCount" class="count-badge">20 prospects</span>
+    <div class="filter-group">
+      <label>🔎 Search</label>
+      <input type="text" id="filterSearch" placeholder="Company, name, email, city..." oninput="applyFilters()">
+    </div>
+    <div class="filter-group">
+      <label>📍 State</label>
+      <select id="filterState" onchange="applyFilters()">
+        <option value="">All States</option>
+        <option value="NY">🗽 New York</option>
+        <option value="NJ">🌿 New Jersey</option>
+        <option value="CT">⚓ Connecticut</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>⚡ Priority</label>
+      <select id="filterPriority" onchange="applyFilters()">
+        <option value="">All Priorities</option>
+        <option value="High">🔴 High</option>
+        <option value="Strong">🟡 Strong</option>
+        <option value="Pipeline">🔵 Pipeline</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>🖥️ IT Signal</label>
+      <select id="filterSignal" onchange="applyFilters()">
+        <option value="">All</option>
+        <option value="yes">✅ Signal Detected</option>
+        <option value="no">— No Signal</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>🏭 Industry</label>
+      <select id="filterIndustry" onchange="applyFilters()">
+        <option value="">All Industries</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>📋 Status</label>
+      <select id="filterStatus" onchange="applyFilters()">
+        <option value="">All Statuses</option>
+        <option value="Not Contacted">⬜ Not Contacted</option>
+        <option value="Left Message">📞 Left Message</option>
+        <option value="Sent Email">📧 Sent Email</option>
+        <option value="Not Interested">❌ Not Interested</option>
+        <option value="Unreachable/Wrong Number">🚫 Unreachable/Wrong Number</option>
+        <option value="Meeting Booked">📅 Meeting Booked</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn btn-secondary" onclick="clearFilters()">↺ Reset</button>
+      <button class="btn btn-primary" onclick="exportCSV()">⬇ CSV</button>
+    </div>
   </div>
 
-  <div class="table-wrap">
-    <table id="prospectsTable">
-      <thead>
-        <tr>
-          <th>Contact</th>
-          <th>Company</th>
-          <th>Location</th>
-          <th>Size / Revenue</th>
-          <th>Priority</th>
-          <th>IT Signal</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Run Date</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Sharon Olzerowicz</div>
-      <div style="color:#666;font-size:11px">President &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/sharon-olzerowicz-a01790b/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Hired by Matrix, Inc.</div>
-      <div style="color:#666;font-size:11px">Staffing &amp; Recruiting</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Montvale, NJ</div>
-      <div style="margin-top:4px"><span style="background:#27ae60;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NJ</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>100-200 Employees</div>
-      <div style="color:#888">$25M-$35M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">High</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">IT Hiring</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Full-service staffing firm placing IT professionals across clients; large candidate DB and CRM infra…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="tel:201-587-0777" style="color:#2980b9;text-decoration:none">201-587-0777</a></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:solzerowicz@hiredbymatrix.com" style="color:#2980b9;text-decoration:none;font-size:12px">solzerowicz@hiredbymatrix.com</a><span style="color:#999;font-size:10px"> (Low)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Paul Spagnoletti</div>
-      <div style="color:#666;font-size:11px">President &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/company/lionheart-maintenance-llc" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Lionheart Maintenance LLC</div>
-      <div style="color:#666;font-size:11px">Facilities Maintenance / Data Center Services</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Hopewell, NJ</div>
-      <div style="margin-top:4px"><span style="background:#27ae60;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NJ</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>20-50 Employees</div>
-      <div style="color:#888">$5M-$25M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">High</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#c0392b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cybersecurity Interest</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Company provides data center cleaning services — works inside live data centers across NY/NJ/CT; str…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="tel:973-218-6443" style="color:#2980b9;text-decoration:none">973-218-6443</a></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:paul@LHMUS.com" style="color:#2980b9;text-decoration:none;font-size:12px">paul@LHMUS.com</a><span style="color:#999;font-size:10px"> (High)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Larry Zogby</div>
-      <div style="color:#666;font-size:11px">CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/larryzogby/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">RDS Same Day Delivery (RDS Delivery Service)</div>
-      <div style="color:#666;font-size:11px">Healthcare Logistics / Last-Mile Delivery</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Long Island City, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>50-150 Employees</div>
-      <div style="color:#888">$15M-$25M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">High</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#c0392b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cybersecurity Interest</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Healthcare logistics to hospitals, pharma, labs across NYC tri-state — HIPAA compliance requirements…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:lzogby@rdsdelivery.com" style="color:#2980b9;text-decoration:none;font-size:12px">lzogby@rdsdelivery.com</a><span style="color:#999;font-size:10px"> (Low)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Jay Harris</div>
-      <div style="color:#666;font-size:11px">CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/jay-harris-7a4b6b1/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Komar Distribution Services</div>
-      <div style="color:#666;font-size:11px">3PL / Distribution</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">New York, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>100-200 Employees</div>
-      <div style="color:#888">$25M-$40M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">High</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#c0392b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cybersecurity Interest</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Rankiteo cyber risk score 751/1000 flagged for distribution sector; company uses AdRoll and digital …</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="tel:918-429-7779" style="color:#2980b9;text-decoration:none">918-429-7779</a></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:sales@komardistribution.com" style="color:#2980b9;text-decoration:none;font-size:12px">sales@komardistribution.com</a><span style="color:#999;font-size:10px"> (Low)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Sedat Saka</div>
-      <div style="color:#666;font-size:11px">CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/sedat-saka-33479714/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">MTS Logistics, Inc.</div>
-      <div style="color:#666;font-size:11px">International Freight / Ocean Cargo</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">New York, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>50-100 Employees</div>
-      <div style="color:#888">$10M-$20M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">High</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#16a085;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cloud Migration</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Global freight forwarder with offices in NYC, LA, Houston, Dubai, Vietnam — distributed multi-office…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="tel:212-594-3117" style="color:#2980b9;text-decoration:none">212-594-3117</a></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:ssaka@mtsnyc.com" style="color:#2980b9;text-decoration:none;font-size:12px">ssaka@mtsnyc.com</a><span style="color:#999;font-size:10px"> (Medium)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Eric Mendel</div>
-      <div style="color:#666;font-size:11px">CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/eric-mendel-50049260/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Avenir Healthcare Group</div>
-      <div style="color:#666;font-size:11px">Healthcare Management / Senior Care</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Cedarhurst, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>100-300 Employees</div>
-      <div style="color:#888">$20M-$80M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">High</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#c0392b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cybersecurity Interest</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Operates network of nursing homes, assisted living, and Managed Long-Term Care plan across NY/NJ — H…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:emendel@avenirhc.com" style="color:#2980b9;text-decoration:none;font-size:12px">emendel@avenirhc.com</a><span style="color:#999;font-size:10px"> (Medium)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Eileen Vos</div>
-      <div style="color:#666;font-size:11px">CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/eileen-vos-b8b9aa1/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Spectrum Staffing Services / HRStaffers Inc.</div>
-      <div style="color:#666;font-size:11px">Staffing &amp; Recruiting</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Parsippany, NJ</div>
-      <div style="margin-top:4px"><span style="background:#27ae60;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NJ</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>50-100 Employees</div>
-      <div style="color:#888">$15M-$25M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e67e22;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Strong</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">5-division HR/engineering/pharma staffing firm since 1988; large applicant tracking and payroll syst…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="tel:877-509-9838" style="color:#2980b9;text-decoration:none">877-509-9838</a></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:evos@spectrumstaffingusa.com" style="color:#2980b9;text-decoration:none;font-size:12px">evos@spectrumstaffingusa.com</a><span style="color:#999;font-size:10px"> (Low)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Bob O'Neill</div>
-      <div style="color:#666;font-size:11px">CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/bob-o-neill-0789b216/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">O'Neill Logistics</div>
-      <div style="color:#666;font-size:11px">3PL / Transportation &amp; Logistics</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">East Brunswick, NJ</div>
-      <div style="margin-top:4px"><span style="background:#27ae60;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NJ</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>50-100 Employees</div>
-      <div style="color:#888">$20M-$30M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e67e22;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Strong</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#16a085;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cloud Migration</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Multi-location 3PL (NJ, GA, CA) relies on WMS/TMS platforms; distributed workforce needs cloud IT an…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Kellie Adami</div>
-      <div style="color:#666;font-size:11px">CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/kellie-adami-3b4a5618/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Summit Direct</div>
-      <div style="color:#666;font-size:11px">Freight / Transportation &amp; Logistics</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Rochester, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>30-80 Employees</div>
-      <div style="color:#888">$10M-$40M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e67e22;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Strong</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#16a085;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cloud Migration</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Multimodal freight broker (TL, LTL, FedEx Tier 1, specialized) serving national retail/restaurant cl…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Wuilson Quezada</div>
-      <div style="color:#666;font-size:11px">Founder &amp; Owner</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/wuilson-quezada-b1580913/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">NYC Factory Inc.</div>
-      <div style="color:#666;font-size:11px">Apparel Manufacturing</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">New York, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>50-100 Employees</div>
-      <div style="color:#888">$10M-$30M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e67e22;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Strong</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">IT Hiring</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">70+ worker NYC apparel manufacturer supplying Calvin Klein, Yeezy; supply chain complexity and brand…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Lindsey Fortunato</div>
-      <div style="color:#666;font-size:11px">President &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/lindsey-fortunato-aia-ncarb-b1b8b41a/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Fortunato Construction Group</div>
-      <div style="color:#666;font-size:11px">Construction Management</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Berlin, CT</div>
-      <div style="margin-top:4px"><span style="background:#8e44ad;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">CT</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>25-50 Employees</div>
-      <div style="color:#888">$10M-$20M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#e67e22;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Strong</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">CT construction management firm operating Maine to Virginia; ICSC Top 40 Under 40 leader managing mu…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:lindsey@fortunatoconstruction.com" style="color:#2980b9;text-decoration:none;font-size:12px">lindsey@fortunatoconstruction.com</a><span style="color:#999;font-size:10px"> (Low)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Adam Beqqi</div>
-      <div style="color:#666;font-size:11px">CEO &amp; Founder</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/adam-beqqi-b60a60170/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Equinox Home Improvement</div>
-      <div style="color:#666;font-size:11px">Residential &amp; Commercial Renovation</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Nutley, NJ</div>
-      <div style="margin-top:4px"><span style="background:#27ae60;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NJ</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>20-50 Employees</div>
-      <div style="color:#888">$5M-$20M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">NJ-based home improvement contractor serving residential and commercial clients statewide; growing o…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="tel:844-846-8566" style="color:#2980b9;text-decoration:none">844-846-8566</a></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><a href="mailto:adam@equinoxhomeimprovement.com" style="color:#2980b9;text-decoration:none;font-size:12px">adam@equinoxhomeimprovement.com</a><span style="color:#999;font-size:10px"> (Low)</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Vincent Castellano</div>
-      <div style="color:#666;font-size:11px">President</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/vincent-castellano-b59a8b77/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Castellano Construction Inc.</div>
-      <div style="color:#666;font-size:11px">Construction</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Hillsborough, NJ</div>
-      <div style="margin-top:4px"><span style="background:#27ae60;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NJ</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>20-75 Employees</div>
-      <div style="color:#888">$10M-$30M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Established NJ construction firm focused on commercial/residential builds; LinkedIn profile mentions…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Donald Semeraro</div>
-      <div style="color:#666;font-size:11px">President</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/donald-semeraro-6a3a68174/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Frank Semeraro Construction Co., Inc.</div>
-      <div style="color:#666;font-size:11px">Construction</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Wayne, NJ</div>
-      <div style="margin-top:4px"><span style="background:#27ae60;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NJ</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>40-100 Employees</div>
-      <div style="color:#888">$15M-$50M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Multi-decade family-owned NJ construction company; Wayne NJ market with commercial projects; William…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">J. Evans Doleyres</div>
-      <div style="color:#666;font-size:11px">President &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/j-evans-doleyres-a7b9b61b/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">JED Engineering, P.C.</div>
-      <div style="color:#666;font-size:11px">Civil / Structural Engineering</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Uniondale, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>25-60 Employees</div>
-      <div style="color:#888">$5M-$20M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Nassau County engineering consulting firm since 2010; CAD/BIM software, project file storage, and cl…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Tarek Z. Khouri</div>
-      <div style="color:#666;font-size:11px">President &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/tarek-z-khouri-p-e-8b4a2614/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">HydroTech Environmental Engineering and Geology, DPC</div>
-      <div style="color:#666;font-size:11px">Environmental Engineering</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">New York, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>20-50 Employees</div>
-      <div style="color:#888">$5M-$20M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">NY/Saudi Arabia environmental engineering firm; GIS/modeling software, secure client data, and multi…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Michael Gerazounis</div>
-      <div style="color:#666;font-size:11px">President &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/michael-gerazounis-b2a4851a/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">MG Engineering, P.C.</div>
-      <div style="color:#666;font-size:11px">MEP Engineering</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">New York, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>20-60 Employees</div>
-      <div style="color:#888">$5M-$20M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">NYC MEP engineering firm; LEED AP-certified principal managing technical project data, AutoCAD/Revit…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Purna Kharel</div>
-      <div style="color:#666;font-size:11px">Founder, President &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/purna-kharel-6b2b9a1a/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">K&amp;A Engineering Consulting PC</div>
-      <div style="color:#666;font-size:11px">Civil / Transportation Engineering</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">White Plains, NY</div>
-      <div style="margin-top:4px"><span style="background:#2980b9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">NY</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>20-50 Employees</div>
-      <div style="color:#888">$5M-$20M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#16a085;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Cloud Migration</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">State of NJ Drupal platform involvement noted on LinkedIn — government contract IT work indicates cl…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Joseph Mastroluca</div>
-      <div style="color:#666;font-size:11px">Owner</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/joseph-mastroluca-pe-cpd-7b1a5213/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">Mastroluca Engineering Associates, LLC</div>
-      <div style="color:#666;font-size:11px">Mechanical / Plumbing Engineering</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Stamford, CT</div>
-      <div style="margin-top:4px"><span style="background:#8e44ad;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">CT</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>20-40 Employees</div>
-      <div style="color:#888">$5M-$15M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">Stamford CT engineering firm; CPD credential indicates plumbing design focus; project data managemen…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-<tr style="border-bottom:1px solid #f0f0f0;transition:background 0.15s" onmouseover="this.style.background='#f9fbff'" onmouseout="this.style.background='#fff'">
-    <td style="padding:12px 10px;min-width:160px">
-      <div style="font-weight:600;font-size:13px">Marily Brito</div>
-      <div style="color:#666;font-size:11px">Founder &amp; CEO</div>
-      <div style="margin-top:4px"><a href="https://www.linkedin.com/in/marily-brito-3b4a5618/" target="_blank" style="color:#0077b5;font-size:11px">LinkedIn ↗</a></div>
-    </td>
-    <td style="padding:12px 10px;min-width:180px">
-      <div style="font-weight:600;font-size:13px">All Care...All Day</div>
-      <div style="color:#666;font-size:11px">Commercial Cleaning / Facility Services</div>
-    </td>
-    <td style="padding:12px 10px;white-space:nowrap">
-      <div style="font-size:12px">Stratford, CT</div>
-      <div style="margin-top:4px"><span style="background:#8e44ad;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">CT</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div>25-75 Employees</div>
-      <div style="color:#888">$5M-$15M</div>
-    </td>
-    <td style="padding:12px 10px"><span style="background:#3498db;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">Pipeline</span></td>
-    <td style="padding:12px 10px">
-      <div><span style="background:#95a5a6;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap">None</span></div>
-      <div style="color:#666;font-size:10px;margin-top:4px;max-width:200px;line-height:1.4">100+ recurring commercial clients in Fairfield &amp; New Haven counties since 2000; dispatch scheduling,…</div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:12px">
-      <div><span style="color:#ccc">—</span></div>
-    </td>
-    <td style="padding:12px 10px;font-size:11px;color:#888">2026-04-09</td>
-  </tr>
-      </tbody>
-    </table>
-    <div class="run-info">Last updated 2026-04-09 · 20 total prospects across all runs</div>
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h2>🏢 IT/MSP Decision-Maker Prospects</h2>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="result-count" id="resultCount">Loading…</span>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="prospectsTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">Company</th>
+            <th onclick="sortTable(1)">Industry</th>
+            <th onclick="sortTable(2)">Size / Revenue</th>
+            <th onclick="sortTable(3)">Decision Maker</th>
+            <th onclick="sortTable(4)">📞 Phone</th>
+            <th onclick="sortTable(5)">✉️ Email</th>
+            <th onclick="sortTable(6)">🖥️ IT Signal</th>
+            <th onclick="sortTable(7)">Priority</th>
+            <th>Status</th>
+            <th onclick="sortTable(9)">Run Date</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
+    <div id="emptyState" class="empty-state" style="display:none">
+      <div class="empty-icon">🖥️</div>
+      <h3>No prospects yet — first run coming up!</h3>
+      <p>The scheduled task runs every day at 1:00 PM EST. It will search LinkedIn for Owners, Founders &amp; CEOs of 20–200 employee businesses in NJ, NY &amp; CT and populate this dashboard automatically.</p>
+    </div>
   </div>
 
+</div>
 </section>
 
-<!-- TARGET CRITERIA -->
-<section id="criteria">
-  <div style="text-align:center;margin-bottom:40px">
-    <h2 style="font-size:32px;font-weight:800;margin-bottom:10px">Target Criteria</h2>
-    <p style="color:rgba(255,255,255,0.55);font-size:15px">How prospects are selected and scored each run</p>
-  </div>
-  <div class="criteria-grid">
-    <div class="criteria-card">
-      <h3>Company Profile</h3>
-      <ul>
-        <li>20–200 employees</li>
-        <li>$10M–$100M estimated revenue</li>
-        <li>NJ, NY, or CT based</li>
-        <li>Non-IT / non-MSP business</li>
-        <li>Active, established operation</li>
-      </ul>
-    </div>
-    <div class="criteria-card">
-      <h3>Contact Type</h3>
-      <ul>
-        <li>Owner / Founder</li>
-        <li>CEO / President</li>
-        <li>COO / Managing Director</li>
-        <li>Direct decision-maker</li>
-        <li>LinkedIn-verified profile</li>
-      </ul>
-    </div>
-    <div class="criteria-card">
-      <h3>IT Signals</h3>
-      <ul>
-        <li>MSP / IT vendor search activity</li>
-        <li>Cybersecurity interest / incident</li>
-        <li>Cloud migration in progress</li>
-        <li>IT staff hiring (no internal IT)</li>
-        <li>Tech stack growth signals</li>
-      </ul>
-    </div>
-    <div class="criteria-card">
-      <h3>Priority Scoring</h3>
-      <ul>
-        <li><strong style="color:#e74c3c">High</strong> — Strong IT signal + contact info</li>
-        <li><strong style="color:#e67e22">Strong</strong> — Good fit + reachable</li>
-        <li><strong style="color:#3498db">Pipeline</strong> — Qualified, needs nurture</li>
-        <li>Phone &amp; email boost score</li>
-        <li>Revenue size factors in</li>
-      </ul>
+<!-- ── TARGET CRITERIA ───────────────────────────────────── -->
+<section id="criteria" style="background:white; padding: 48px 0; margin-top: 40px; border-top: 1px solid var(--border);">
+  <div class="container" style="max-width:1000px">
+    <div class="section-title" style="text-align:center;margin-bottom:32px">🎯 Who We're Targeting</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div class="card" style="border-top:3px solid var(--blue)">
+        <div style="font-size:1.6rem;margin-bottom:12px">👤</div>
+        <div style="font-weight:700;margin-bottom:8px">Decision Maker Titles</div>
+        <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
+          Owner · Founder · Co-Founder<br>CEO · President<br>Managing Director<br>Managing Partner
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--green)">
+        <div style="font-size:1.6rem;margin-bottom:12px">🏢</div>
+        <div style="font-weight:700;margin-bottom:8px">Company Profile</div>
+        <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
+          20–200 Employees<br>$10M–$100M Revenue<br>Any Industry<br>NJ · NY · CT Only
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--purple)">
+        <div style="font-size:1.6rem;margin-bottom:12px">🔍</div>
+        <div style="font-weight:700;margin-bottom:8px">IT Buying Signals</div>
+        <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
+          MSP searches<br>Cybersecurity interest<br>Cloud migration activity<br>IT job postings (3–6 mo)
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+
+<!-- ── FOOTER ────────────────────────────────────────────── -->
+<footer>
+  <strong>IT/MSP SMB Prospects Dashboard</strong> · AJ Donofrio · Powered by daily LinkedIn prospecting<br>
+  <span style="margin-top:4px;display:block">Targeting Owners, Founders &amp; CEOs · NJ · NY · CT · 20–200 Employees · $10M–$100M Revenue</span>
+</footer>
 
 <script>
-function filterTable() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const state = document.getElementById('stateFilter').value;
-  const priority = document.getElementById('priorityFilter').value;
-  const signal = document.getElementById('signalFilter').value;
-  const rows = document.querySelectorAll('#tableBody tr');
+// ── PROSPECT DATA ──────────────────────────────────────────
+// This array is populated by the daily 1pm scheduled task.
+// Each run appends 20 new prospects and regenerates this file.
+const PROSPECTS = [];
+
+// ── HELPERS ───────────────────────────────────────────────
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function signalBadge(signal) {
+  if (!signal || signal === 'None') return '<span class="badge badge-none">—</span>';
+  const map = {
+    'Cybersecurity Interest': 'badge-cyber',
+    'Cloud Migration': 'badge-cloud',
+    'IT Hiring': 'badge-hiring',
+    'MSP Search': 'badge-signal',
+  };
+  const cls = map[signal] || 'badge-signal';
+  return `<span class="badge ${cls}">🔍 ${esc(signal)}</span>`;
+}
+
+function priorityBadge(p) {
+  const map = { High: 'badge-high', Strong: 'badge-strong', Pipeline: 'badge-pipeline' };
+  return `<span class="badge ${map[p] || 'badge-pipeline'}">${esc(p)}</span>`;
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderTable(data) {
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+  const table = document.getElementById('prospectsTable');
+
+  if (!data || data.length === 0) {
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    document.getElementById('resultCount').textContent = '0 prospects';
+    return;
+  }
+  table.style.display = '';
+  empty.style.display = 'none';
+
+  tbody.innerHTML = data.map((p, i) => {
+    const id = p.id || ('p-' + i);
+    const savedStatus = localStorage.getItem('itmsp_status_' + id) || 'Not Contacted';
+    const statuses = ['Not Contacted','Left Message','Sent Email','Not Interested','Unreachable/Wrong Number','Meeting Booked'];
+    const statusOpts = statuses.map(s =>
+      `<option value="${s}" ${savedStatus === s ? 'selected' : ''}>${{
+        'Not Contacted':'⬜','Left Message':'📞','Sent Email':'📧',
+        'Not Interested':'❌','Unreachable/Wrong Number':'🚫','Meeting Booked':'📅'
+      }[s] || ''} ${s}</option>`
+    ).join('');
+    return `
+    <tr data-state="${esc(p.state)}"
+        data-industry="${esc(p.industry)}"
+        data-priority="${esc(p.priority)}"
+        data-itsignal="${(p.itSignal && p.itSignal !== 'None') ? 'yes' : 'no'}"
+        data-status="${esc(savedStatus)}"
+        data-rundate="${esc(p.runDate)}">
+      <td>
+        ${p.contactLinkedIn
+          ? `<a href="${esc(p.contactLinkedIn)}" target="_blank" rel="noopener"><strong>${esc(p.companyName)}</strong></a>`
+          : `<strong>${esc(p.companyName)}</strong>`}
+        <br><span class="text-muted">${esc(p.location)}</span>
+      </td>
+      <td>${esc(p.industry)}</td>
+      <td>
+        <strong>${esc(p.employeeSize)}</strong>
+        <br><span class="text-muted">${esc(p.estimatedRevenue)}</span>
+      </td>
+      <td>
+        <strong>${esc(p.contactName)}</strong>
+        <br><span class="text-muted">${esc(p.contactTitle)}</span>
+      </td>
+      <td>${p.contactPhone
+        ? `<a href="tel:${esc(p.contactPhone)}">${esc(p.contactPhone)}</a>`
+        : '<span class="text-muted">—</span>'}</td>
+      <td>${p.contactEmail
+        ? `<a href="mailto:${esc(p.contactEmail)}">${esc(p.contactEmail)}</a>`
+        : '<span class="text-muted">—</span>'}</td>
+      <td>${signalBadge(p.itSignal)}</td>
+      <td>${priorityBadge(p.priority)}</td>
+      <td>
+        <select class="status-select" onchange="saveStatus('${id}', this.value, this.closest('tr'))">
+          ${statusOpts}
+        </select>
+      </td>
+      <td><span class="text-muted">${esc(p.runDate)}</span></td>
+    </tr>`;
+  }).join('\n');
+
+  document.getElementById('resultCount').textContent = data.length + ' prospect' + (data.length === 1 ? '' : 's');
+}
+
+function buildCharts(data) {
+  if (!data || data.length === 0) return;
+
+  document.getElementById('chartsRow').style.display = '';
+  document.getElementById('infoRow').style.display = '';
+
+  const byIndustry = {}, byDate = {};
+  const byPriority = { High: 0, Strong: 0, Pipeline: 0 };
+  data.forEach(p => {
+    if (p.industry) byIndustry[p.industry] = (byIndustry[p.industry] || 0) + 1;
+    if (p.priority) byPriority[p.priority] = (byPriority[p.priority] || 0) + 1;
+    if (p.runDate) byDate[p.runDate] = (byDate[p.runDate] || 0) + 1;
+  });
+
+  const COLORS = ['#1a56db','#e74c3c','#f39c12','#2ecc71','#9b59b6','#1abc9c','#e67e22','#3498db','#e91e63','#00bcd4','#8bc34a','#ff5722'];
+
+  new Chart(document.getElementById('industryChart'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(byIndustry),
+      datasets: [{ data: Object.values(byIndustry), backgroundColor: COLORS, borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } } } }
+  });
+
+  new Chart(document.getElementById('priorityChart'), {
+    type: 'bar',
+    data: {
+      labels: ['High', 'Strong', 'Pipeline'],
+      datasets: [{ data: [byPriority.High, byPriority.Strong, byPriority.Pipeline],
+        backgroundColor: ['#dc2626','#d97706','#2563eb'], borderRadius: 8 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+
+  const sortedDates = Object.keys(byDate).sort();
+  new Chart(document.getElementById('timelineChart'), {
+    type: 'line',
+    data: {
+      labels: sortedDates,
+      datasets: [{
+        label: 'Added', data: sortedDates.map(d => byDate[d]),
+        borderColor: '#1a56db', backgroundColor: 'rgba(26,86,219,0.08)',
+        tension: 0.35, fill: true, pointRadius: 5, pointBackgroundColor: '#1a56db'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+}
+
+function updateStats(data) {
+  const total   = data.length;
+  const high    = data.filter(p => p.priority === 'High').length;
+  const signal  = data.filter(p => p.itSignal && p.itSignal !== 'None').length;
+  const phone   = data.filter(p => p.contactPhone).length;
+  const email   = data.filter(p => p.contactEmail).length;
+  const ny      = data.filter(p => p.state === 'NY').length;
+  const nj      = data.filter(p => p.state === 'NJ').length;
+  const ct      = data.filter(p => p.state === 'CT').length;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statHigh').textContent  = high;
+  document.getElementById('statSignal').textContent = signal;
+  document.getElementById('statPhone').textContent = phone;
+  document.getElementById('statEmail').textContent = email;
+  document.getElementById('statNY').textContent    = ny;
+  document.getElementById('statNJ').textContent    = nj;
+  document.getElementById('statCT').textContent    = ct;
+
+  document.getElementById('iTotal').textContent  = total;
+  document.getElementById('iHigh').textContent   = high;
+  document.getElementById('iSignal').textContent  = signal;
+  document.getElementById('iPhone').textContent  = phone;
+
+  // Industry filter
+  const byIndustry = {};
+  data.forEach(p => { if (p.industry) byIndustry[p.industry] = true; });
+  const sel = document.getElementById('filterIndustry');
+  sel.innerHTML = '<option value="">All Industries</option>';
+  Object.keys(byIndustry).sort().forEach(ind => {
+    const o = document.createElement('option');
+    o.value = ind; o.textContent = ind;
+    sel.appendChild(o);
+  });
+}
+
+// ── STATUS ────────────────────────────────────────────────
+function saveStatus(id, val, row) {
+  localStorage.setItem('itmsp_status_' + id, val);
+  if (row) row.dataset.status = val;
+  applyFilters();
+}
+
+// ── FILTERS ───────────────────────────────────────────────
+function applyFilters() {
+  const search   = (document.getElementById('filterSearch')?.value || '').toLowerCase();
+  const state    = document.getElementById('filterState')?.value || '';
+  const priority = document.getElementById('filterPriority')?.value || '';
+  const signal   = document.getElementById('filterSignal')?.value || '';
+  const industry = document.getElementById('filterIndustry')?.value || '';
+  const status   = document.getElementById('filterStatus')?.value || '';
+
   let visible = 0;
-  rows.forEach(row => {
+  document.querySelectorAll('#tableBody tr').forEach(row => {
     const text = row.textContent.toLowerCase();
-    const rowState = row.querySelector('td:nth-child(3)')?.textContent || '';
-    const rowPriority = row.querySelector('td:nth-child(5)')?.textContent?.trim() || '';
-    const rowSignal = row.querySelector('td:nth-child(6)')?.textContent?.trim() || '';
-    const matchSearch = !search || text.includes(search);
-    const matchState = !state || rowState.includes(state);
-    const matchPriority = !priority || rowPriority.includes(priority);
-    const matchSignal = !signal || rowSignal.includes(signal);
-    const show = matchSearch && matchState && matchPriority && matchSignal;
-    row.style.display = show ? '' : 'none';
+    const show =
+      (!search   || text.includes(search)) &&
+      (!state    || row.dataset.state    === state) &&
+      (!priority || row.dataset.priority === priority) &&
+      (!signal   || row.dataset.itsignal === signal) &&
+      (!industry || row.dataset.industry === industry) &&
+      (!status   || row.dataset.status   === status);
+    row.classList.toggle('hidden-row', !show);
     if (show) visible++;
   });
-  document.getElementById('rowCount').textContent = visible + ' prospect' + (visible !== 1 ? 's' : '');
+  const rc = document.getElementById('resultCount');
+  if (rc) rc.textContent = visible + ' prospect' + (visible === 1 ? '' : 's');
 }
-// Smooth scroll for nav links
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+
+function clearFilters() {
+  ['filterSearch','filterState','filterPriority','filterSignal','filterIndustry','filterStatus'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   });
+  applyFilters();
+}
+
+// ── SORT ──────────────────────────────────────────────────
+let sortCol = -1, sortDir = 1;
+function sortTable(col) {
+  const tbody = document.getElementById('tableBody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
+  rows.sort((a, b) => {
+    const ta = (a.cells[col]?.textContent || '').trim().toLowerCase();
+    const tb = (b.cells[col]?.textContent || '').trim().toLowerCase();
+    return ta < tb ? -sortDir : ta > tb ? sortDir : 0;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+  document.querySelectorAll('thead th').forEach((th, i) => {
+    th.classList.remove('sorted-asc','sorted-desc');
+    if (i === col) th.classList.add(sortDir === 1 ? 'sorted-asc' : 'sorted-desc');
+  });
+}
+
+// ── CSV EXPORT ────────────────────────────────────────────
+function exportCSV() {
+  const hdrs = ['Company','Location','State','Industry','Employee Size','Est. Revenue','Contact Name','Contact Title','LinkedIn','Phone','Email','IT Signal','IT Signal Source','Priority','Run Date'];
+  const rows = Array.from(document.querySelectorAll('#tableBody tr:not(.hidden-row)')).map(row => {
+    const c = row.cells;
+    const companyLink = c[0]?.querySelector('a');
+    return [
+      c[0]?.querySelector('strong')?.textContent.trim() || '',
+      c[0]?.querySelector('.text-muted')?.textContent.trim() || '',
+      row.dataset.state || '',
+      c[1]?.textContent.trim() || '',
+      c[2]?.querySelector('strong')?.textContent.trim() || '',
+      c[2]?.querySelector('.text-muted')?.textContent.trim() || '',
+      c[3]?.querySelector('strong')?.textContent.trim() || '',
+      c[3]?.querySelector('.text-muted')?.textContent.trim() || '',
+      companyLink?.href || '',
+      c[4]?.textContent.trim() || '',
+      c[5]?.textContent.trim() || '',
+      c[6]?.textContent.trim() || '',
+      '',
+      c[7]?.textContent.trim() || '',
+      c[9]?.textContent.trim() || ''
+    ].map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',');
+  });
+  const csv = [hdrs.map(h => '"' + h + '"').join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'it_msp_prospects_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// ── INIT ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderTable(PROSPECTS);
+  updateStats(PROSPECTS);
+  buildCharts(PROSPECTS);
 });
 </script>
 </body>
