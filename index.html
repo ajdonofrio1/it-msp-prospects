@@ -2,870 +2,565 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IT/MSP Prospects Dashboard</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    /*  RESET & ROOT  */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --blue:       #1a56db;
-      --blue-dark:  #1e429f;
-      --blue-xdark: #0a2463;
-      --green:      #059669;
-      --red:        #dc2626;
-      --amber:      #d97706;
-      --purple:     #7c3aed;
-      --teal:       #0891b2;
-      --bg:         #f0f4ff;
-      --card:       #ffffff;
-      --border:     #e5e7eb;
-      --text:       #1f2937;
-      --muted:      #6b7280;
-      --radius:     12px;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-    }
-
-    /*  NAV  */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(10,36,99,0.97);
-      backdrop-filter: blur(10px);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 32px;
-      height: 60px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
-    }
-    .nav-brand { display: flex; align-items: center; gap: 10px; color: white; font-weight: 700; font-size: 1.05rem; text-decoration: none; }
-    .nav-brand .icon { font-size: 1.3rem; }
-    .nav-links { display: flex; gap: 8px; }
-    .nav-links a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 0.875rem;
-      padding: 6px 14px;
-      border-radius: 6px;
-      transition: all 0.15s;
-    }
-    .nav-links a:hover { background: rgba(255,255,255,0.12); color: white; }
-    .nav-links a.active { background: rgba(255,255,255,0.18); color: white; }
-    .nav-badge {
-      background: #ef4444; color: white;
-      font-size: 0.65rem; font-weight: 700;
-      padding: 2px 6px; border-radius: 99px;
-      margin-left: 4px;
-    }
-
-    /*  HERO  */
-    .hero {
-      background: linear-gradient(135deg, #1a56db 0%, #0e3a96 45%, #0a2463 100%);
-      padding: 64px 32px 48px;
-      text-align: center;
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-    .hero-content { position: relative; max-width: 800px; margin: 0 auto; }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: rgba(255,255,255,0.9);
-      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 5px 14px; border-radius: 99px;
-      margin-bottom: 20px;
-    }
-    .hero h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.02em; }
-    .hero h1 span { color: #93c5fd; }
-    .hero p { font-size: 1.1rem; opacity: 0.85; max-width: 560px; margin: 0 auto 32px; }
-    .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 32px; }
-    .hero-pill {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white; font-size: 0.82rem; font-weight: 500;
-      padding: 6px 14px; border-radius: 99px;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 11px 22px; border-radius: 8px;
-      font-size: 0.9rem; font-weight: 600;
-      text-decoration: none; cursor: pointer; border: none;
-      transition: all 0.15s; white-space: nowrap;
-    }
-    .btn-white { background: white; color: var(--blue-dark); }
-    .btn-white:hover { background: #f0f4ff; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-    .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4); }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
-    .btn-primary { background: var(--blue); color: white; }
-    .btn-primary:hover { background: var(--blue-dark); }
-    .btn-secondary { background: #f3f4f6; color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: #e5e7eb; }
-    .btn-green { background: var(--green); color: white; }
-    .btn-green:hover { opacity: 0.9; }
-
-    /*  STAT BAR  */
-    .stat-bar {
-      background: white;
-      display: flex; flex-wrap: wrap;
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .stat-item {
-      flex: 1; min-width: 110px;
-      padding: 18px 20px; text-align: center;
-      border-right: 1px solid var(--border);
-      transition: background 0.15s;
-    }
-    .stat-item:last-child { border-right: none; }
-    .stat-item:hover { background: #f8fafc; }
-    .stat-num { font-size: 1.9rem; font-weight: 800; }
-    .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
-
-    /*  MAIN LAYOUT  */
-    .container { max-width: 1600px; margin: 0 auto; padding: 28px 20px; }
-
-    /*  SECTION TITLE  */
-    .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px; }
-
-    /*  CARDS  */
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      padding: 22px;
-    }
-    .card-title { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-
-    /*  CHARTS ROW  */
-    .charts-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-    @media (max-width: 1100px) { .charts-row { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
-    .chart-wrap { position: relative; height: 210px; }
-
-    /*  INFO CARDS ROW  */
-    .info-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
-    @media (max-width: 1000px) { .info-row { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 580px) { .info-row { grid-template-columns: 1fr; } }
-    .info-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      padding: 18px 20px;
-      display: flex; align-items: center; gap: 16px;
-      border-left: 4px solid transparent;
-    }
-    .info-card.blue { border-left-color: var(--blue); }
-    .info-card.red { border-left-color: var(--red); }
-    .info-card.green { border-left-color: var(--green); }
-    .info-card.amber { border-left-color: var(--amber); }
-    .info-card.purple { border-left-color: var(--purple); }
-    .info-icon { font-size: 1.8rem; flex-shrink: 0; }
-    .info-num { font-size: 1.7rem; font-weight: 800; line-height: 1; }
-    .info-label { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-
-    /*  FILTERS  */
-    .filters {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      padding: 16px 20px;
-      margin-bottom: 16px;
-      display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
-    }
-    .filter-group { display: flex; flex-direction: column; gap: 4px; }
-    .filter-group label { font-size: 0.7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-    .filter-group input, .filter-group select {
-      padding: 8px 12px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font-size: 0.875rem;
-      background: white;
-      min-width: 150px;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .filter-group input:focus, .filter-group select:focus {
-      outline: none;
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(26,86,219,0.12);
-    }
-    .filter-actions { display: flex; gap: 8px; align-items: flex-end; }
-
-    /*  TABLE  */
-    .table-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      overflow: hidden;
-    }
-    .table-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 22px;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap; gap: 10px;
-    }
-    .table-header h2 { font-size: 1rem; font-weight: 700; }
-    .result-count { font-size: 0.82rem; color: var(--muted); }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-    thead th {
-      background: #f8fafc;
-      padding: 10px 14px;
-      text-align: left;
-      font-weight: 700;
-      color: var(--muted);
-      font-size: 0.73rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-      cursor: pointer;
-      user-select: none;
-    }
-    thead th:hover { background: #eef2ff; color: var(--blue); }
-    thead th.sorted-asc::after { content: ' '; color: var(--blue); }
-    thead th.sorted-desc::after { content: ' '; color: var(--blue); }
-    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: #f8fafc; }
-    tbody tr.hidden-row { display: none; }
-    td { padding: 11px 14px; vertical-align: middle; }
-    .text-muted { color: var(--muted); font-size: 0.8rem; }
-    a { color: var(--blue); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    /*  BADGES  */
-    .badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 3px 9px; border-radius: 99px;
-      font-size: 0.71rem; font-weight: 700;
-    }
-    .badge-high     { background: #fee2e2; color: #dc2626; }
-    .badge-strong   { background: #fef3c7; color: #b45309; }
-    .badge-pipeline { background: #dbeafe; color: #1d4ed8; }
-    .badge-signal   { background: #d1fae5; color: #065f46; }
-    .badge-cyber    { background: #ede9fe; color: #5b21b6; }
-    .badge-cloud    { background: #e0f2fe; color: #0369a1; }
-    .badge-hiring   { background: #fef9c3; color: #92400e; }
-    .badge-none     { background: #f3f4f6; color: #9ca3af; }
-
-    /*  STATUS SELECT  */
-    .status-select {
-      padding: 5px 8px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 0.78rem;
-      background: white;
-      cursor: pointer;
-      width: 100%;
-      min-width: 145px;
-    }
-    .status-select:focus { outline: none; border-color: var(--blue); }
-
-    /*  EMPTY STATE  */
-    .empty-state { text-align: center; padding: 72px 24px; color: var(--muted); }
-    .empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
-    .empty-state h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
-    .empty-state p { font-size: 0.9rem; max-width: 400px; margin: 0 auto 24px; line-height: 1.6; }
-
-
-    /*  FOOTER  */
-    footer {
-      background: var(--blue-xdark);
-      color: rgba(255,255,255,0.6);
-      text-align: center;
-      padding: 28px 24px;
-      font-size: 0.8rem;
-      margin-top: 40px;
-    }
-    footer strong { color: white; }
-
-    /*  LAST UPDATED PULSE  */
-    .pulse {
-      display: inline-block;
-      width: 8px; height: 8px;
-      background: #4ade80; border-radius: 99px;
-      margin-right: 6px;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; background: #f8fafc; color: #1e293b; }
+    .header { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); color: white; padding: 24px 32px; }
+    .header h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 700; }
+    .header p { margin: 0; opacity: 0.7; font-size: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; padding: 24px 32px; }
+    .stat-card { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; }
+    .stat-card .value { font-size: 28px; font-weight: 700; color: #0f172a; }
+    .stat-card .label { font-size: 12px; color: #64748b; margin-top: 4px; }
+    .table-container { margin: 0 32px 32px; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .table-header { padding: 16px 20px; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; }
+    .table-header h2 { margin: 0; font-size: 16px; color: #0f172a; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead tr { background: #f1f5f9; }
+    thead th { padding: 10px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+    .filter-bar { padding: 12px 20px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-btn { padding: 4px 12px; border: 1px solid #e2e8f0; border-radius: 20px; background: white; cursor: pointer; font-size: 12px; color: #64748b; }
+    .filter-btn:hover { background: #f1f5f9; }
+    .filter-btn.active { background: #0f172a; color: white; border-color: #0f172a; }
+    .search-box { padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; width: 200px; }
+    .updated { padding: 8px 32px; font-size: 12px; color: #94a3b8; }
   </style>
 </head>
 <body>
+  <div class="header">
+    <h1>ð¯ IT/MSP Prospects Dashboard</h1>
+    <p>Automated daily prospecting â NJ Â· NY Â· CT small-to-midsize businesses</p>
+  </div>
 
-<!--  NAV  -->
-<nav>
-  <a class="nav-brand" href="#">
-    <span class="icon"></span>
-    IT/MSP Prospects
-  </a>
-  <div class="nav-links">
-    <a href="#dashboard" class="active">Dashboard</a>
-    <a href="#criteria">Target Criteria</a>
-  </div>
-</nav>
-
-<!--  HERO  -->
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-eyebrow">
-      <span class="pulse"></span>
-      Daily 1:00 PM Auto-Update
+  <div class="stats">
+    <div class="stat-card">
+      <div class="value">20</div>
+      <div class="label">Total Prospects</div>
     </div>
-    <h1>IT/MSP SMB<br><span>Decision-Maker Prospects</span></h1>
-    <p>Owners, Founders &amp; CEOs actively running businesses that need managed IT services -- sourced daily across NJ, NY &amp; CT.</p>
-    <div class="hero-pills">
-      <span class="hero-pill"> 20-200 Employees</span>
-      <span class="hero-pill"> $10M-$100M Revenue</span>
-      <span class="hero-pill"> NJ - NY - CT</span>
-      <span class="hero-pill"> IT Signal Detection</span>
-      <span class="hero-pill"> Phone + Email Lookup</span>
+    <div class="stat-card">
+      <div class="value" style="color:#16a34a;">4</div>
+      <div class="label">High Priority</div>
     </div>
-    <div class="hero-cta">
-      <a href="#dashboard" class="btn btn-white">View Dashboard </a>
+    <div class="stat-card">
+      <div class="value" style="color:#2563eb;">5</div>
+      <div class="label">Strong</div>
     </div>
-  </div>
-</section>
-
-<!--  STAT BAR  -->
-<div class="stat-bar" id="statBar">
-  <div class="stat-item">
-    <div class="stat-num" id="statTotal" style="color:var(--blue)">0</div>
-    <div class="stat-label">Total Prospects</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statHigh" style="color:var(--red)">0</div>
-    <div class="stat-label">High Priority</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statSignal" style="color:var(--green)">0</div>
-    <div class="stat-label">IT Signal Detected</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statPhone" style="color:var(--amber)">0</div>
-    <div class="stat-label">Phones Found</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statEmail" style="color:var(--purple)">0</div>
-    <div class="stat-label">Emails Found</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statNY" style="color:var(--teal)">0</div>
-    <div class="stat-label">New York</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statNJ" style="color:var(--teal)">0</div>
-    <div class="stat-label">New Jersey</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statCT" style="color:var(--teal)">0</div>
-    <div class="stat-label">Connecticut</div>
-  </div>
-</div>
-
-<!--  MAIN DASHBOARD  -->
-<section id="dashboard">
-<div class="container">
-
-  <!-- Info cards -->
-  <div class="info-row" id="infoRow" style="display:none">
-    <div class="info-card blue">
-      <div class="info-icon"></div>
-      <div><div class="info-num" id="iTotal">0</div><div class="info-label">Total Prospects Logged</div></div>
+    <div class="stat-card">
+      <div class="value" style="color:#64748b;">11</div>
+      <div class="label">Pipeline</div>
     </div>
-    <div class="info-card red">
-      <div class="info-icon"></div>
-      <div><div class="info-num" id="iHigh">0</div><div class="info-label">High Priority Targets</div></div>
+    <div class="stat-card">
+      <div class="value" style="color:#0891b2;">7</div>
+      <div class="label">IT Signal</div>
     </div>
-    <div class="info-card green">
-      <div class="info-icon"></div>
-      <div><div class="info-num" id="iSignal">0</div><div class="info-label">With IT Buying Signal</div></div>
+    <div class="stat-card">
+      <div class="value">15</div>
+      <div class="label">Have Phone</div>
     </div>
-    <div class="info-card amber">
-      <div class="info-icon"></div>
-      <div><div class="info-num" id="iPhone">0</div><div class="info-label">Direct Phone Numbers</div></div>
+    <div class="stat-card">
+      <div class="value">17</div>
+      <div class="label">Have Email</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">10<span style="font-size:14px;"> NY</span> / 6<span style="font-size:14px;"> NJ</span> / 4<span style="font-size:14px;"> CT</span></div>
+      <div class="label">By State</div>
     </div>
   </div>
 
-  <!-- Charts -->
-  <div class="charts-row" id="chartsRow" style="display:none">
-    <div class="card">
-      <div class="card-title"> By Industry</div>
-      <div class="chart-wrap"><canvas id="industryChart"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-title"> By Priority Level</div>
-      <div class="chart-wrap"><canvas id="priorityChart"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-title"> Prospects Added Over Time</div>
-      <div class="chart-wrap"><canvas id="timelineChart"></canvas></div>
-    </div>
-  </div>
-
-  <!-- Filters -->
-  <div class="filters">
-    <div class="filter-group">
-      <label> Search</label>
-      <input type="text" id="filterSearch" placeholder="Company, name, email, city..." oninput="applyFilters()">
-    </div>
-    <div class="filter-group">
-      <label> State</label>
-      <select id="filterState" onchange="applyFilters()">
-        <option value="">All States</option>
-        <option value="NY"> New York</option>
-        <option value="NJ"> New Jersey</option>
-        <option value="CT"> Connecticut</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label> Priority</label>
-      <select id="filterPriority" onchange="applyFilters()">
-        <option value="">All Priorities</option>
-        <option value="High"> High</option>
-        <option value="Strong"> Strong</option>
-        <option value="Pipeline"> Pipeline</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label> IT Signal</label>
-      <select id="filterSignal" onchange="applyFilters()">
-        <option value="">All</option>
-        <option value="yes"> Signal Detected</option>
-        <option value="no">-- No Signal</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label> Industry</label>
-      <select id="filterIndustry" onchange="applyFilters()">
-        <option value="">All Industries</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label> Status</label>
-      <select id="filterStatus" onchange="applyFilters()">
-        <option value="">All Statuses</option>
-        <option value="Not Contacted"> Not Contacted</option>
-        <option value="Left Message"> Left Message</option>
-        <option value="Sent Email"> Sent Email</option>
-        <option value="Not Interested"> Not Interested</option>
-        <option value="Unreachable/Wrong Number"> Unreachable/Wrong Number</option>
-        <option value="Meeting Booked"> Meeting Booked</option>
-      </select>
-    </div>
-    <div class="filter-actions">
-      <button class="btn btn-secondary" onclick="clearFilters()"> Reset</button>
-      <button class="btn btn-primary" onclick="exportCSV()"> CSV</button>
-    </div>
-  </div>
-
-  <!-- Table -->
-  <div class="table-card">
+  <div class="table-container">
     <div class="table-header">
-      <h2> IT/MSP Decision-Maker Prospects</h2>
-      <div style="display:flex;align-items:center;gap:12px">
-        <span class="result-count" id="resultCount">Loading</span>
-      </div>
+      <h2>All Prospects</h2>
+      <input class="search-box" type="text" id="searchBox" placeholder="Search prospects..." onkeyup="filterTable()" />
     </div>
-    <div class="table-wrap">
+    <div class="filter-bar">
+      <span style="font-size:12px;color:#94a3b8;align-self:center;">Filter:</span>
+      <button class="filter-btn active" onclick="setFilter('all', this)">All (20)</button>
+      <button class="filter-btn" onclick="setFilter('High', this)">ð¢ High (4)</button>
+      <button class="filter-btn" onclick="setFilter('Strong', this)">ðµ Strong (5)</button>
+      <button class="filter-btn" onclick="setFilter('Pipeline', this)">âª Pipeline (11)</button>
+      <button class="filter-btn" onclick="setFilter('NY', this)">NY (10)</button>
+      <button class="filter-btn" onclick="setFilter('NJ', this)">NJ (6)</button>
+      <button class="filter-btn" onclick="setFilter('CT', this)">CT (4)</button>
+      <button class="filter-btn" onclick="setFilter('signal', this)">ð´ IT Signal (7)</button>
+    </div>
+    <div style="overflow-x:auto;">
       <table id="prospectsTable">
         <thead>
           <tr>
-            <th onclick="sortTable(0)">Company</th>
-            <th onclick="sortTable(1)">Industry</th>
-            <th onclick="sortTable(2)">Size / Revenue</th>
-            <th onclick="sortTable(3)">Decision Maker</th>
-            <th onclick="sortTable(4)"> Phone</th>
-            <th onclick="sortTable(5)"> Email</th>
-            <th onclick="sortTable(6)"> IT Signal</th>
-            <th onclick="sortTable(7)">Priority</th>
-            <th>Status</th>
-            <th onclick="sortTable(9)">Run Date</th>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Industry</th>
+            <th>State</th>
+            <th>Size</th>
+            <th>Revenue</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>IT Signal</th>
+            <th>Priority</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody id="tableBody">
+          
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">George Daguillard</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">President & Founder</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/george-daguillard-5370b131/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Stellae International Inc.</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Supply Chain / Fashion Logistics</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">100-200 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$50M-$60M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (212) 744-2574</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ g_daguillard@stellae.net</span><br><span style="color:#94a3b8;font-size:10px;">High</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#0891b2;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Cloud Migration</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#16a34a;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">High</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Bob Goldberg</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO & President</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/bob-goldberg-069b3239" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Yorke Construction Corp</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Construction / General Contracting</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">25-50 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$8M-$12M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ bgoldberg@yorkeconstruction.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Kenroy Watson</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO & President</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/kenroy-watson-56791abb/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Watson's Plumbing, Heating & Building Services Inc.</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Plumbing & HVAC</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">25-75 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$3M-$10M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (917) 709-7972</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ charm30birth2004@yahoo.com</span><br><span style="color:#94a3b8;font-size:10px;">High</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Anthony Vigilante</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">President</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/anthony-v-6009bb17/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Vigilante Plumbing, Heating & Air Conditioning</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Plumbing & HVAC</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">50-150 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$10M-$30M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (718) 530-0404</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ anthony@vigilanteplumbing.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Strong</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Marvin Nieves</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO & President</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/marvin-nieves-22335936/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">M&M Cleaning Services LLC</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Commercial Cleaning / Janitorial</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">25-75 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$2M-$8M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (917) 330-4523</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ marvin@cleaningbronx.com</span><br><span style="color:#94a3b8;font-size:10px;">High</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">George Constantinou</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">Managing Partner</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/to-george-constantinou/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Mil Gustos Hospitality Group</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Restaurant / Hospitality</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">50-150 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$5M-$20M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (718) 932-8784</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ gconst70@hotmail.com</span><br><span style="color:#94a3b8;font-size:10px;">High</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">IT Hiring</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Strong</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Ron Facchiano</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">Owner</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/ron-facchiano-7b41098/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Signs By Tomorrow East Northport</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Signage / Printing</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-50 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$1M-$5M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (516) 587-2516</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ ron@signsbytomorrow.com</span><br><span style="color:#94a3b8;font-size:10px;">High</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">George Cestero</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/george-cestero-97b8a4b6" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">New York Construction Associates</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Construction / General Contracting</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-40 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$3M-$7M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Joao Cerreto</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">Owner & Founder</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/joao-cerreto-93526217a/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Construction Pros of New Jersey LLC</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Construction / General Contracting</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-40 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$2M-$6M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">John Rinaldi</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO & President</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/john-rinaldi-set-667b993/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Madison Service Corporation</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Fire Alarm / Life Safety Systems</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#1d4ed8;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NY</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">10-30 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$1M-$5M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (718) 428-2176</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ jrinaldi@madisonservice.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Cybersecurity Interest</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Strong</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Sherri Johnson</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">Co-Founder & President/CEO</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/sherri-j-77ba394/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Bear Staffing Services</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Staffing / Workforce Solutions</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#15803d;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NJ</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">100-200 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$20M-$50M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ sjohnson@bearstaff.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">IT Hiring</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#16a34a;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">High</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Kelly Gao</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">President & CEO</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/kelly-gao-9b44006a/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">NJ Staffing Solutions</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Staffing / Light Industrial</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#15803d;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NJ</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-50 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$2M-$10M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (973) 876-7839</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ kelly@njstaffingsolutions.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">James Stathis</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">President & CEO</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/njkitchensandbaths/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">NJS Construction LLC</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Construction / Kitchen & Bath Remodeling</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#15803d;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NJ</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-40 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$3M-$8M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (973) 219-8994</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ james@njkitchendesign.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Geovani Espejo</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO & Founder</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/geovani-espejo-427461116/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">ESPJ Construction Corp.</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Construction / Decorative Concrete & Masonry</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#15803d;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NJ</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-50 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$3M-$8M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (908) 361-9843</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ geovani@espjconstruction.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Mike Ash</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">Owner</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/mike-ash-7bb3bb11" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">New Jersey Fire & Security Alarm Company</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Security / Fire & Alarm Systems</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#15803d;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NJ</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-75 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$2M-$8M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ mike@njfiresecurity.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#dc2626;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Cybersecurity Interest</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Strong</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Bill Solko</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">Founder & Dealer Principal</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/bill-solko-b9a12a6/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Automotive Avenues NJ</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Automotive / Used Car Dealership</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#15803d;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">NJ</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">50-100 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$20M-$60M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (732) 431-0050</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#cbd5e1;">â</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">IT Hiring</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#16a34a;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">High</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Michael Annatone</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO & Founder</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/michael-annatone-71bab314/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Executive Landscaping Inc.</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Landscaping / Grounds Maintenance</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#b45309;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">CT</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">50-120 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$12M-$16M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (203) 410-5231</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ mannatone@executivelandscaping.biz</span><br><span style="color:#94a3b8;font-size:10px;">High</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#2563eb;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Strong</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Joel Yencho</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">Owner & Principal</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/joel-yencho-4911492/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">JLY Construction Managers</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Construction Management / General Contracting</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#b45309;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">CT</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">10-25 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$2M-$5M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (203) 506-8589</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ joel@jlyllc.com</span><br><span style="color:#94a3b8;font-size:10px;">Medium</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#ffffff;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Xaymara Ramirez</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">CEO & Founder</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/marloyaltyins/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Loyalty Insurance Marketing Group LLC</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Insurance / Financial Services</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#b45309;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">CT</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">20-50 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$2M-$8M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (800) 459-0309</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ xramirez@loyaltyins.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="color:#94a3b8;font-size:11px;">None</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#64748b;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">Pipeline</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
+    <tr style="background:#f8fafc;">
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e293b;">Joseph Viola Jr.</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;color:#64748b;font-size:13px;">President</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
+        <a href="https://www.linkedin.com/in/joseph-viola-jr-26b0a529/" target="_blank" style="color:#0a66c2;text-decoration:none;font-size:13px;">Corporate Construction Inc.</a>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">Construction / Commercial General Contracting</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;text-align:center;"><span style="background:#b45309;color:white;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;">CT</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">50-75 Employees</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;color:#64748b;">$15M-$35M</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">ð (203) 792-0885</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:12px;">
+        <span style="color:#0f172a;">âï¸ jviola@corp-construction.com</span><br><span style="color:#94a3b8;font-size:10px;">Low</span>
+      </td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#d97706;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">IT Hiring</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;"><span style="background:#16a34a;color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;">High</span></td>
+      <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-size:11px;color:#94a3b8;">2026-04-11</td>
+    </tr>
+  
         </tbody>
       </table>
     </div>
-    <div id="emptyState" class="empty-state" style="display:none">
-      <div class="empty-icon"></div>
-      <h3>No prospects yet -- first run coming up!</h3>
-      <p>The scheduled task runs every day at 1:00 PM EST. It will search LinkedIn for Owners, Founders &amp; CEOs of 20-200 employee businesses in NJ, NY &amp; CT and populate this dashboard automatically.</p>
-    </div>
   </div>
 
-</div>
-</section>
+  <div class="updated">Last updated: 2026-04-11 Â· 20 total prospects across all runs</div>
 
-<!--  TARGET CRITERIA  -->
-<section id="criteria" style="background:white; padding: 48px 0; margin-top: 40px; border-top: 1px solid var(--border);">
-  <div class="container" style="max-width:1000px">
-    <div class="section-title" style="text-align:center;margin-bottom:32px"> Who We're Targeting</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
-      <div class="card" style="border-top:3px solid var(--blue)">
-        <div style="font-size:1.6rem;margin-bottom:12px"></div>
-        <div style="font-weight:700;margin-bottom:8px">Decision Maker Titles</div>
-        <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
-          Owner - Founder - Co-Founder<br>CEO - President<br>Managing Director<br>Managing Partner
-        </div>
-      </div>
-      <div class="card" style="border-top:3px solid var(--green)">
-        <div style="font-size:1.6rem;margin-bottom:12px"></div>
-        <div style="font-weight:700;margin-bottom:8px">Company Profile</div>
-        <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
-          20-200 Employees<br>$10M-$100M Revenue<br>Any Industry<br>NJ - NY - CT Only
-        </div>
-      </div>
-      <div class="card" style="border-top:3px solid var(--purple)">
-        <div style="font-size:1.6rem;margin-bottom:12px"></div>
-        <div style="font-weight:700;margin-bottom:8px">IT Buying Signals</div>
-        <div style="font-size:0.875rem;color:var(--muted);line-height:1.8">
-          MSP searches<br>Cybersecurity interest<br>Cloud migration activity<br>IT job postings (3-6 mo)
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <script>
+    let currentFilter = 'all';
 
-
-<!--  FOOTER  -->
-<footer>
-  <strong>IT/MSP SMB Prospects Dashboard</strong> - Doug Donofrio - Powered by daily LinkedIn prospecting<br>
-  <span style="margin-top:4px;display:block">Targeting Owners, Founders &amp; CEOs - NJ - NY - CT - 20-200 Employees - $10M-$100M Revenue</span>
-</footer>
-
-<script>
-//  PROSPECT DATA 
-// This array is populated by the daily 1pm scheduled task.
-// Each run appends 20 new prospects and regenerates this file.
-const PROSPECTS = [
-  { id:"p-0", companyName:"Hired by Matrix, Inc.", location:"Montvale, NJ", state:"NJ", industry:"Staffing & Recruiting", employeeSize:"100-200 Employees", estimatedRevenue:"$25M-$35M", contactName:"Sharon Olzerowicz", contactTitle:"President & CEO", contactPhone:"201-587-0777", contactEmail:"solzerowicz@hiredbymatrix.com", itSignal:"IT Hiring", priority:"High", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-1", companyName:"Lionheart Maintenance LLC", location:"Hopewell, NJ", state:"NJ", industry:"Facilities Maintenance / Data Center Services", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$25M", contactName:"Paul Spagnoletti", contactTitle:"President & CEO", contactPhone:"973-218-6443", contactEmail:"paul@LHMUS.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-2", companyName:"RDS Same Day Delivery", location:"Long Island City, NY", state:"NY", industry:"Healthcare Logistics / Last-Mile Delivery", employeeSize:"50-150 Employees", estimatedRevenue:"$15M-$25M", contactName:"Larry Zogby", contactTitle:"CEO", contactPhone:null, contactEmail:"lzogby@rdsdelivery.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-3", companyName:"Komar Distribution Services", location:"New York, NY", state:"NY", industry:"3PL / Distribution", employeeSize:"100-200 Employees", estimatedRevenue:"$25M-$40M", contactName:"Jay Harris", contactTitle:"CEO", contactPhone:"918-429-7779", contactEmail:"sales@komardistribution.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-4", companyName:"MTS Logistics, Inc.", location:"New York, NY", state:"NY", industry:"International Freight / Ocean Cargo", employeeSize:"50-100 Employees", estimatedRevenue:"$10M-$20M", contactName:"Sedat Saka", contactTitle:"CEO", contactPhone:"212-594-3117", contactEmail:"ssaka@mtsnyc.com", itSignal:"Cloud Migration", priority:"High", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-5", companyName:"Avenir Healthcare Group", location:"Cedarhurst, NY", state:"NY", industry:"Healthcare Management / Senior Care", employeeSize:"100-300 Employees", estimatedRevenue:"$20M-$80M", contactName:"Eric Mendel", contactTitle:"CEO", contactPhone:null, contactEmail:"emendel@avenirhc.com", itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-6", companyName:"Spectrum Staffing Services / HRStaffers Inc.", location:"Parsippany, NJ", state:"NJ", industry:"Staffing & Recruiting", employeeSize:"50-100 Employees", estimatedRevenue:"$15M-$25M", contactName:"Eileen Vos", contactTitle:"CEO", contactPhone:"877-509-9838", contactEmail:"evos@spectrumstaffingusa.com", itSignal:"None", priority:"Strong", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-7", companyName:"O'Neill Logistics", location:"East Brunswick, NJ", state:"NJ", industry:"3PL / Transportation & Logistics", employeeSize:"50-100 Employees", estimatedRevenue:"$20M-$30M", contactName:"Bob O'Neill", contactTitle:"CEO", contactPhone:null, contactEmail:null, itSignal:"Cloud Migration", priority:"Strong", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-8", companyName:"Summit Direct", location:"Rochester, NY", state:"NY", industry:"Freight / Transportation & Logistics", employeeSize:"30-80 Employees", estimatedRevenue:"$10M-$40M", contactName:"Kellie Adami", contactTitle:"CEO", contactPhone:null, contactEmail:null, itSignal:"Cloud Migration", priority:"Strong", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-9", companyName:"NYC Factory Inc.", location:"New York, NY", state:"NY", industry:"Apparel Manufacturing", employeeSize:"50-100 Employees", estimatedRevenue:"$10M-$30M", contactName:"Wuilson Quezada", contactTitle:"Founder & Owner", contactPhone:null, contactEmail:null, itSignal:"IT Hiring", priority:"Strong", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-10", companyName:"Fortunato Construction Group", location:"Berlin, CT", state:"CT", industry:"Construction Management", employeeSize:"25-50 Employees", estimatedRevenue:"$10M-$20M", contactName:"Lindsey Fortunato", contactTitle:"President & CEO", contactPhone:null, contactEmail:"lindsey@fortunatoconstruction.com", itSignal:"None", priority:"Strong", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-11", companyName:"Equinox Home Improvement", location:"Nutley, NJ", state:"NJ", industry:"Residential & Commercial Renovation", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$20M", contactName:"Adam Beqqi", contactTitle:"CEO & Founder", contactPhone:"844-846-8566", contactEmail:"adam@equinoxhomeimprovement.com", itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-12", companyName:"Castellano Construction Inc.", location:"Hillsborough, NJ", state:"NJ", industry:"Construction", employeeSize:"20-75 Employees", estimatedRevenue:"$10M-$30M", contactName:"Vincent Castellano", contactTitle:"President", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-13", companyName:"Frank Semeraro Construction Co., Inc.", location:"Wayne, NJ", state:"NJ", industry:"Construction", employeeSize:"40-100 Employees", estimatedRevenue:"$15M-$50M", contactName:"Donald Semeraro", contactTitle:"President", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-14", companyName:"JED Engineering, P.C.", location:"Uniondale, NY", state:"NY", industry:"Civil / Structural Engineering", employeeSize:"25-60 Employees", estimatedRevenue:"$5M-$20M", contactName:"J. Evans Doleyres", contactTitle:"President & CEO", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-15", companyName:"HydroTech Environmental Engineering", location:"New York, NY", state:"NY", industry:"Environmental Engineering", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$20M", contactName:"Tarek Z. Khouri", contactTitle:"President & CEO", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-16", companyName:"MG Engineering, P.C.", location:"New York, NY", state:"NY", industry:"MEP Engineering", employeeSize:"20-60 Employees", estimatedRevenue:"$5M-$20M", contactName:"Michael Gerazounis", contactTitle:"President & CEO", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-17", companyName:"K&A Engineering Consulting PC", location:"White Plains, NY", state:"NY", industry:"Civil / Transportation Engineering", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$20M", contactName:"Purna Kharel", contactTitle:"Founder, President & CEO", contactPhone:null, contactEmail:null, itSignal:"Cloud Migration", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-18", companyName:"Mastroluca Engineering Associates, LLC", location:"Stamford, CT", state:"CT", industry:"Mechanical / Plumbing Engineering", employeeSize:"20-40 Employees", estimatedRevenue:"$5M-$15M", contactName:"Joseph Mastroluca", contactTitle:"Owner", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-19", companyName:"All Care...All Day", location:"Stratford, CT", state:"CT", industry:"Commercial Cleaning / Facility Services", employeeSize:"25-75 Employees", estimatedRevenue:"$5M-$15M", contactName:"Marily Brito", contactTitle:"Founder & CEO", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-09", runLabel:"Morning Run" },
-  { id:"p-20", companyName:"Multiple Portfolio Companies", location:"Hillside, NJ", state:"NJ", industry:"Multi-Industry / CEO Services", employeeSize:"100-200 Employees", estimatedRevenue:"$25M-$75M", contactName:"Phil Iuliano", contactTitle:"CEO", contactPhone:null, contactEmail:null, itSignal:"None", priority:"High", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-21", companyName:"Roadly Logistics", location:"Matawan, NJ", state:"NJ", industry:"Logistics / Transportation", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$20M", contactName:"Anthony Curreri", contactTitle:"Founder & CEO", contactPhone:null, contactEmail:null, itSignal:"IT Hiring", priority:"Strong", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-22", companyName:"AccessPlus / RingSquared", location:"Saddle River, NJ", state:"NJ", industry:"Telecommunications / Technology", employeeSize:"50-100 Employees", estimatedRevenue:"$15M-$40M", contactName:"Kevin Alward", contactTitle:"Owner & CEO", contactPhone:null, contactEmail:null, itSignal:"Cloud Migration", priority:"High", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-23", companyName:"iQ4", location:"Franklin Lakes, NJ", state:"NJ", industry:"Technology / Education Technology", employeeSize:"50-100 Employees", estimatedRevenue:"$10M-$30M", contactName:"Frank Cicio", contactTitle:"CEO & Founder", contactPhone:null, contactEmail:null, itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-24", companyName:"DLA, LLC", location:"Fairfield, NJ", state:"NJ", industry:"Accounting / Professional Services", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$15M", contactName:"David Landau", contactTitle:"Founder & CEO", contactPhone:null, contactEmail:null, itSignal:"Cybersecurity Interest", priority:"High", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-25", companyName:"Red Rock Industries, Inc.", location:"Plainview, NY", state:"NY", industry:"Manufacturing / Construction", employeeSize:"50-100 Employees", estimatedRevenue:"$15M-$40M", contactName:"Dom Del Monaco", contactTitle:"Owner & President", contactPhone:"(516) 833-6942", contactEmail:"tara@redrockind.com", itSignal:"None", priority:"Strong", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-26", companyName:"Vernon Devices Inc", location:"New Rochelle, NY", state:"NY", industry:"Manufacturing / Electronics", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$15M", contactName:"David Newmark", contactTitle:"Owner", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Strong", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-27", companyName:"Storm Manufacturing Inc.", location:"Schaghticoke, NY", state:"NY", industry:"Precision CNC Manufacturing", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$15M", contactName:"Norm Loubier", contactTitle:"Owner", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-28", companyName:"11 11 Logistics LLC", location:"Yonkers, NY", state:"NY", industry:"Logistics / Freight", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$20M", contactName:"David Estrella", contactTitle:"CEO", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Strong", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-29", companyName:"Forge Freight", location:"New York, NY", state:"NY", industry:"Freight / Transportation", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$20M", contactName:"Jessica Forgione", contactTitle:"Founder & CEO", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Strong", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-30", companyName:"Advanced Care", location:"Elmont, NY", state:"NY", industry:"Healthcare / Durable Medical Equipment", employeeSize:"50-100 Employees", estimatedRevenue:"$15M-$40M", contactName:"David Weinberg", contactTitle:"CEO & Founder", contactPhone:null, contactEmail:null, itSignal:"IT Hiring", priority:"High", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-31", companyName:"The Ferrera Construction Group, LLC", location:"Madison, CT", state:"CT", industry:"Construction", employeeSize:"20-50 Employees", estimatedRevenue:"$10M-$30M", contactName:"Roland Ferrera", contactTitle:"President", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Strong", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-32", companyName:"NDC Commercial Construction", location:"Plainville, CT", state:"CT", industry:"Commercial Construction", employeeSize:"50-100 Employees", estimatedRevenue:"$15M-$40M", contactName:"Jacqueline Laramee", contactTitle:"President", contactPhone:"(860) 621-9164", contactEmail:"info@ndccorp.com", itSignal:"None", priority:"Strong", runDate:"2026-04-10", runLabel:"Afternoon Run" },
-  { id:"p-33", companyName:"Concrete Superstructures Inc", location:"Lakeville, CT", state:"CT", industry:"Construction / Concrete Contracting", employeeSize:"20-50 Employees", estimatedRevenue:"$5M-$20M", contactName:"Doug Cartelli", contactTitle:"President", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-10", runLabel:"Afternoon Run" }
-];
-
-//  HELPERS 
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function signalBadge(signal) {
-  if (!signal || signal === 'None') return '<span class="badge badge-none">--</span>';
-  const map = {
-    'Cybersecurity Interest': 'badge-cyber',
-    'Cloud Migration': 'badge-cloud',
-    'IT Hiring': 'badge-hiring',
-    'MSP Search': 'badge-signal',
-  };
-  const cls = map[signal] || 'badge-signal';
-  return `<span class="badge ${cls}"> ${esc(signal)}</span>`;
-}
-
-function priorityBadge(p) {
-  const map = { High: 'badge-high', Strong: 'badge-strong', Pipeline: 'badge-pipeline' };
-  return `<span class="badge ${map[p] || 'badge-pipeline'}">${esc(p)}</span>`;
-}
-
-//  RENDER 
-function renderTable(data) {
-  const tbody = document.getElementById('tableBody');
-  const empty = document.getElementById('emptyState');
-  const table = document.getElementById('prospectsTable');
-
-  if (!data || data.length === 0) {
-    table.style.display = 'none';
-    empty.style.display = 'block';
-    document.getElementById('resultCount').textContent = '0 prospects';
-    return;
-  }
-  table.style.display = '';
-  empty.style.display = 'none';
-
-  tbody.innerHTML = data.map((p, i) => {
-    const id = p.id || ('p-' + i);
-    const savedStatus = localStorage.getItem('itmsp_status_' + id) || '';
-    const statuses = ['','Left Message','Sent Email','Not Interested','Meeting Scheduled','Unreachable/Wrong Number'];
-    const statusOpts = statuses.map(s =>
-      `<option value="${s}" ${savedStatus === s ? 'selected' : ''}>${s || '-- New --'}</option>`
-    ).join('');
-    return `
-    <tr data-state="${esc(p.state)}"
-        data-industry="${esc(p.industry)}"
-        data-priority="${esc(p.priority)}"
-        data-itsignal="${(p.itSignal && p.itSignal !== 'None') ? 'yes' : 'no'}"
-        data-status="${esc(savedStatus)}"
-        data-rundate="${esc(p.runDate)}">
-      <td>
-        <strong>${esc(p.companyName)}</strong>
-        <br><span class="text-muted">${esc(p.location)}</span>
-      </td>
-      <td>${esc(p.industry)}</td>
-      <td>
-        <strong>${esc(p.employeeSize)}</strong>
-        <br><span class="text-muted">${esc(p.estimatedRevenue)}</span>
-      </td>
-      <td>
-        <strong>${esc(p.contactName)}</strong>
-        <br><span class="text-muted">${esc(p.contactTitle)}</span>
-      </td>
-      <td>${p.contactPhone
-        ? `<a href="tel:${esc(p.contactPhone)}">${esc(p.contactPhone)}</a>`
-        : '<span class="text-muted">--</span>'}</td>
-      <td>${p.contactEmail
-        ? `<a href="mailto:${esc(p.contactEmail)}">${esc(p.contactEmail)}</a>`
-        : '<span class="text-muted">--</span>'}</td>
-      <td>${signalBadge(p.itSignal)}</td>
-      <td>${priorityBadge(p.priority)}</td>
-      <td>
-        <select class="status-select" onchange="saveStatus('${id}', this.value, this.closest('tr'))">
-          ${statusOpts}
-        </select>
-      </td>
-      <td><span class="text-muted">${esc(p.runDate)}</span></td>
-    </tr>`;
-  }).join('\n');
-
-  document.getElementById('resultCount').textContent = data.length + ' prospect' + (data.length === 1 ? '' : 's');
-}
-
-function buildCharts(data) {
-  if (!data || data.length === 0) return;
-
-  document.getElementById('chartsRow').style.display = '';
-  document.getElementById('infoRow').style.display = '';
-
-  const byIndustry = {}, byDate = {};
-  const byPriority = { High: 0, Strong: 0, Pipeline: 0 };
-  data.forEach(p => {
-    if (p.industry) byIndustry[p.industry] = (byIndustry[p.industry] || 0) + 1;
-    if (p.priority) byPriority[p.priority] = (byPriority[p.priority] || 0) + 1;
-    if (p.runDate) byDate[p.runDate] = (byDate[p.runDate] || 0) + 1;
-  });
-
-  const COLORS = ['#1a56db','#e74c3c','#f39c12','#2ecc71','#9b59b6','#1abc9c','#e67e22','#3498db','#e91e63','#00bcd4','#8bc34a','#ff5722'];
-
-  new Chart(document.getElementById('industryChart'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(byIndustry),
-      datasets: [{ data: Object.values(byIndustry), backgroundColor: COLORS, borderWidth: 2, borderColor: '#fff' }]
-    },
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } } } }
-  });
-
-  new Chart(document.getElementById('priorityChart'), {
-    type: 'bar',
-    data: {
-      labels: ['High', 'Strong', 'Pipeline'],
-      datasets: [{ data: [byPriority.High, byPriority.Strong, byPriority.Pipeline],
-        backgroundColor: ['#dc2626','#d97706','#2563eb'], borderRadius: 8 }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterTable();
     }
-  });
 
-  const sortedDates = Object.keys(byDate).sort();
-  new Chart(document.getElementById('timelineChart'), {
-    type: 'line',
-    data: {
-      labels: sortedDates,
-      datasets: [{
-        label: 'Added', data: sortedDates.map(d => byDate[d]),
-        borderColor: '#1a56db', backgroundColor: 'rgba(26,86,219,0.08)',
-        tension: 0.35, fill: true, pointRadius: 5, pointBackgroundColor: '#1a56db'
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    function filterTable() {
+      const searchVal = document.getElementById('searchBox').value.toLowerCase();
+      const rows = document.querySelectorAll('#tableBody tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        let show = text.includes(searchVal);
+        if (currentFilter === 'High') show = show && text.includes('high');
+        else if (currentFilter === 'Strong') show = show && text.includes('strong');
+        else if (currentFilter === 'Pipeline') show = show && text.includes('pipeline');
+        else if (currentFilter === 'NY') show = show && row.querySelector('td:nth-child(5)')?.innerText?.includes('NY');
+        else if (currentFilter === 'NJ') show = show && row.querySelector('td:nth-child(5)')?.innerText?.includes('NJ');
+        else if (currentFilter === 'CT') show = show && row.querySelector('td:nth-child(5)')?.innerText?.includes('CT');
+        else if (currentFilter === 'signal') {
+          const signalCell = row.querySelector('td:nth-child(10)')?.innerText || '';
+          show = show && signalCell !== 'None' && signalCell.trim() !== '';
+        }
+        row.style.display = show ? '' : 'none';
+      });
     }
-  });
-}
-
-function updateStats(data) {
-  const total   = data.length;
-  const high    = data.filter(p => p.priority === 'High').length;
-  const signal  = data.filter(p => p.itSignal && p.itSignal !== 'None').length;
-  const phone   = data.filter(p => p.contactPhone).length;
-  const email   = data.filter(p => p.contactEmail).length;
-  const ny      = data.filter(p => p.state === 'NY').length;
-  const nj      = data.filter(p => p.state === 'NJ').length;
-  const ct      = data.filter(p => p.state === 'CT').length;
-
-  document.getElementById('statTotal').textContent = total;
-  document.getElementById('statHigh').textContent  = high;
-  document.getElementById('statSignal').textContent = signal;
-  document.getElementById('statPhone').textContent = phone;
-  document.getElementById('statEmail').textContent = email;
-  document.getElementById('statNY').textContent    = ny;
-  document.getElementById('statNJ').textContent    = nj;
-  document.getElementById('statCT').textContent    = ct;
-
-  document.getElementById('iTotal').textContent  = total;
-  document.getElementById('iHigh').textContent   = high;
-  document.getElementById('iSignal').textContent  = signal;
-  document.getElementById('iPhone').textContent  = phone;
-
-  // Industry filter
-  const byIndustry = {};
-  data.forEach(p => { if (p.industry) byIndustry[p.industry] = true; });
-  const sel = document.getElementById('filterIndustry');
-  sel.innerHTML = '<option value="">All Industries</option>';
-  Object.keys(byIndustry).sort().forEach(ind => {
-    const o = document.createElement('option');
-    o.value = ind; o.textContent = ind;
-    sel.appendChild(o);
-  });
-}
-
-//  STATUS 
-function saveStatus(id, val, row) {
-  localStorage.setItem('itmsp_status_' + id, val);
-  if (row) row.dataset.status = val;
-  applyFilters();
-}
-
-//  FILTERS 
-function applyFilters() {
-  const search   = (document.getElementById('filterSearch')?.value || '').toLowerCase();
-  const state    = document.getElementById('filterState')?.value || '';
-  const priority = document.getElementById('filterPriority')?.value || '';
-  const signal   = document.getElementById('filterSignal')?.value || '';
-  const industry = document.getElementById('filterIndustry')?.value || '';
-  const status   = document.getElementById('filterStatus')?.value || '';
-
-  let visible = 0;
-  document.querySelectorAll('#tableBody tr').forEach(row => {
-    const text = row.textContent.toLowerCase();
-    const show =
-      (!search   || text.includes(search)) &&
-      (!state    || row.dataset.state    === state) &&
-      (!priority || row.dataset.priority === priority) &&
-      (!signal   || row.dataset.itsignal === signal) &&
-      (!industry || row.dataset.industry === industry) &&
-      (!status   || row.dataset.status   === status);
-    row.classList.toggle('hidden-row', !show);
-    if (show) visible++;
-  });
-  const rc = document.getElementById('resultCount');
-  if (rc) rc.textContent = visible + ' prospect' + (visible === 1 ? '' : 's');
-}
-
-function clearFilters() {
-  ['filterSearch','filterState','filterPriority','filterSignal','filterIndustry','filterStatus'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  applyFilters();
-}
-
-//  SORT 
-let sortCol = -1, sortDir = 1;
-function sortTable(col) {
-  const tbody = document.getElementById('tableBody');
-  if (!tbody) return;
-  const rows = Array.from(tbody.querySelectorAll('tr'));
-  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
-  rows.sort((a, b) => {
-    const ta = (a.cells[col]?.textContent || '').trim().toLowerCase();
-    const tb = (b.cells[col]?.textContent || '').trim().toLowerCase();
-    return ta < tb ? -sortDir : ta > tb ? sortDir : 0;
-  });
-  rows.forEach(r => tbody.appendChild(r));
-  document.querySelectorAll('thead th').forEach((th, i) => {
-    th.classList.remove('sorted-asc','sorted-desc');
-    if (i === col) th.classList.add(sortDir === 1 ? 'sorted-asc' : 'sorted-desc');
-  });
-}
-
-//  CSV EXPORT 
-function exportCSV() {
-  const hdrs = ['Company','Location','State','Industry','Employee Size','Est. Revenue','Contact Name','Contact Title','Phone','Email','IT Signal','Priority','Status','Run Date'];
-  const rows = Array.from(document.querySelectorAll('#tableBody tr:not(.hidden-row)')).map(row => {
-    const c = row.cells;
-    const companyLink = c[0]?.querySelector('a');
-    return [
-      c[0]?.querySelector('strong')?.textContent.trim() || '',
-      c[0]?.querySelector('.text-muted')?.textContent.trim() || '',
-      row.dataset.state || '',
-      c[1]?.textContent.trim() || '',
-      c[2]?.querySelector('strong')?.textContent.trim() || '',
-      c[2]?.querySelector('.text-muted')?.textContent.trim() || '',
-      c[3]?.querySelector('strong')?.textContent.trim() || '',
-      c[3]?.querySelector('.text-muted')?.textContent.trim() || '',
-      c[4]?.textContent.trim() || '',
-      c[5]?.textContent.trim() || '',
-      c[6]?.textContent.trim() || '',
-      c[7]?.textContent.trim() || '',
-      c[8]?.querySelector('select')?.value || '',
-      c[9]?.textContent.trim() || ''
-    ].map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',');
-  });
-  const csv = [hdrs.map(h => '"' + h + '"').join(','), ...rows].join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'it_msp_prospects_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-}
-
-//  INIT 
-document.addEventListener('DOMContentLoaded', () => {
-  renderTable(PROSPECTS);
-  updateStats(PROSPECTS);
-  buildCharts(PROSPECTS);
-});
-</script>
+  </script>
 </body>
 </html>
