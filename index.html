@@ -397,6 +397,8 @@ const PROSPECTS = [
   { id:"p-112", companyName:"Sweet Construction", location:"New York, NY", state:"NY", industry:"Construction", employeeSize:"11-50 Employees", estimatedRevenue:"$5M-$15M", contactName:"Steve Alessio", contactTitle:"Owner", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-14", runLabel:"Afternoon Run" },
   { id:"p-113", companyName:"Pine Ridge Construction", location:"Miller Place, NY", state:"NY", industry:"Construction", employeeSize:"11-50 Employees", estimatedRevenue:"$5M-$15M", contactName:"Joseph Haas", contactTitle:"Owner", contactPhone:null, contactEmail:null, itSignal:"None", priority:"Pipeline", runDate:"2026-04-14", runLabel:"Afternoon Run" }
 ];
+// Statuses persisted by automated task — do not edit manually
+const SAVED_STATUSES = {};
 
 function esc(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function signalBadge(signal) {
@@ -418,7 +420,7 @@ function renderTable(data) {
   table.style.display=''; empty.style.display='none';
   tbody.innerHTML = data.map((p, i) => {
     const id = p.id || ('p-'+i);
-    const savedStatus = localStorage.getItem('itmsp_status_'+id) || '';
+    const savedStatus = SAVED_STATUSES[id] || localStorage.getItem('itmsp_status_'+id) || '';
     const statuses = ['','Left Message','Sent Email','Not Interested','Meeting Scheduled','Unreachable/Wrong Number'];
     const statusOpts = statuses.map(s => '<option value="'+s+'"'+(savedStatus===s?' selected':'')+'>'+( s||'-- New --')+'</option>').join('');
     return '<tr data-state="'+esc(p.state)+'" data-industry="'+esc(p.industry)+'" data-priority="'+esc(p.priority)+'" data-itsignal="'+((p.itSignal&&p.itSignal!=='None')?'yes':'no')+'" data-status="'+esc(savedStatus)+'" data-rundate="'+esc(p.runDate)+'">'
@@ -469,7 +471,7 @@ function updateStats(data) {
   Object.keys(byIndustry).sort().forEach(ind=>{ const o=document.createElement('option'); o.value=ind; o.textContent=ind; sel.appendChild(o); });
 }
 
-function saveStatus(id, val, row) { localStorage.setItem('itmsp_status_'+id, val); if (row) row.dataset.status=val; applyFilters(); }
+function saveStatus(id, val, row) { SAVED_STATUSES[id] = val; localStorage.setItem('itmsp_status_'+id, val); if (row) row.dataset.status=val; applyFilters(); }
 
 function applyFilters() {
   const search=(document.getElementById('filterSearch')?.value||'').toLowerCase();
